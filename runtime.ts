@@ -40,7 +40,7 @@ export async function loadAdapters(): Promise<Adapters> {
       return out;
     };
 
-    const mermaid: MermaidRenderer = { async toPng(_mmd) { return null; } };
+    const mermaid: MermaidRenderer = { toPng(_mmd) { return Promise.resolve(null); } };
 
     const fs: FSLike = {
       readFile: p => Deno.readTextFile(p),
@@ -63,13 +63,13 @@ export async function loadAdapters(): Promise<Adapters> {
     const nodePath = await import("node:path");
     const fg = (await import("fast-glob")).default as unknown as (p: string[], o: any)=>Promise<string[]>;
     const mermaid: MermaidRenderer = {
-      async toPng(_mmd) { return null; }
+      toPng(_mmd) { return Promise.resolve(null); }
     };
     const fs: FSLike = {
       readFile: p => fsP.readFile(p, "utf8"),
       writeFile: (p, d) => fsP.writeFile(p, d, "utf8").then(()=>{}),
-      mkdirp: async p => fsP.mkdir(p, { recursive: true }),
-      exists: async p => !!(await fsP.stat(p).catch(()=>null)),
+      mkdirp: p => fsP.mkdir(p, { recursive: true }).then(() => {}),
+      exists: p => fsP.stat(p).then(() => true).catch(() => false),
     };
     return {
       fs,
