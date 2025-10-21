@@ -73,11 +73,8 @@ jobs:
         run: npm publish --access public
       
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.version.outputs.tag }}
-          release_name: ${{ steps.version.outputs.tag }} release
+          name: ${{ steps.version.outputs.tag }} release
           draft: false
           prerelease: false
