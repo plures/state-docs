@@ -69,7 +69,7 @@ export async function loadAdapters(): Promise<Adapters> {
     const fs: FSLike = {
       readFile: p => fsP.readFile(p, "utf8"),
       writeFile: (p, d) => fsP.writeFile(p, d, "utf8"),
-      mkdirp: async p => fsP.mkdir(p, { recursive: true }).then(() => {}),
+      mkdirp: p => fsP.mkdir(p, { recursive: true }).then(() => {}),
       exists: async p => !!(await fsP.stat(p).catch(()=>null)),
     };
     return {
