@@ -10,6 +10,6 @@
     "@std/fs": "jsr:@std/fs@^1",
     "@std/path": "jsr:@std/path@^1",
     "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
-    "eta": "https://deno.land/x/eta@v3.4.0/mod.ts"
+    "eta": "https://deno.land/x/eta@v3.4.0/src/index.ts"
   }
 }
