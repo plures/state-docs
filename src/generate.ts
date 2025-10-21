@@ -9,7 +9,7 @@ type Machine = {
 };
 
 // Placeholder parser. Replace with TS compiler API extraction.
-async function fakeParseMachines(_cfg: StateDocConfig, adapters: Adapters): Promise<Machine[]> {
+function fakeParseMachines(_cfg: StateDocConfig): Machine[] {
   // Generates one demo machine so the pipeline runs end-to-end.
   return [{
     name: "demoMachine",
@@ -23,7 +23,7 @@ async function fakeParseMachines(_cfg: StateDocConfig, adapters: Adapters): Prom
 }
 
 export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
-  const machines = await fakeParseMachines(cfg, adapters);
+  const machines = fakeParseMachines(cfg);
 
   // Ensure target dirs
   await adapters.fs.mkdirp(cfg.target);

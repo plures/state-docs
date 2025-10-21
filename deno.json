@@ -10,8 +10,9 @@
   },
   "lint": { "rules": { "exclude": ["no-explicit-any"] } },
   "imports": {
+    "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
     "@std/fs": "jsr:@std/fs@^1",
     "@std/path": "jsr:@std/path@^1",
-    "eta": "https://deno.land/x/eta@v3.4.0/mod.ts"
+    "eta": "npm:eta@^3.4.0"
   }
 }
