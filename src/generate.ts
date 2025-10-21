@@ -9,7 +9,7 @@ type Machine = {
 };
 
 // Placeholder parser. Replace with TS compiler API extraction.
-async function fakeParseMachines(_cfg: StateDocConfig, adapters: Adapters): Promise<Machine[]> {
+async function fakeParseMachines(_cfg: StateDocConfig, _adapters: Adapters): Promise<Machine[]> {
   // Generates one demo machine so the pipeline runs end-to-end.
   return [{
     name: "demoMachine",

@@ -1,4 +1,3 @@
-
 #!/usr/bin/env -S deno run -A
 import { runOnce } from "./mod.ts";
 
