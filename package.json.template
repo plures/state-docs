@@ -1,0 +1,12 @@
+
+{
+  "name": "statedoc",
+  "version": "0.0.1",
+  "description": "FSM documentation generator for Deno + Node",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "statedoc": "./cli.js" },
+  "exports": { ".": "./mod.js" },
+  "engines": { "node": ">=18" },
+  "peerDependencies": { "@mermaid-js/mermaid-cli": ">=10.9.0" }
+}
