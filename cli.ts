@@ -1,4 +1,3 @@
-
 #!/usr/bin/env -S deno run -A
 import { runOnce } from "./mod.ts";
 
@@ -8,7 +7,7 @@ function parseArgs(argv: string[]) {
   return { cmd, configPath };
 }
 
-const argv = (globalThis as any).Deno ? (Deno.args as string[]) : process.argv.slice(2);
+const argv = (globalThis as any).Deno ? (Deno.args as string[]) : (await import("node:process")).argv.slice(2);
 const { cmd, configPath } = parseArgs(argv);
 
 async function readText(p: string) {

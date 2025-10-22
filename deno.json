@@ -3,7 +3,7 @@
   "name": "@plures/statedoc",
   "version": "0.0.1",
   "exports": "./mod.ts",
-  "task": {
+  "tasks": {
     "gen": "deno run -A cli.ts --config=.stateDoc.json",
     "watch": "deno run -A --watch=src,fsm cli.ts --config=.stateDoc.json",
     "build:npm": "deno run -A scripts/build_npm.ts"
@@ -13,6 +13,7 @@
     "@deno/dnt": "jsr:@deno/dnt@^0.41.3",
     "@std/fs": "jsr:@std/fs@^1",
     "@std/path": "jsr:@std/path@^1",
-    "eta": "npm:eta@^3.4.0"
+    "eta": "npm:eta@^3.4.0",
+    "@deno/dnt": "jsr:@deno/dnt@^0.41.3"
   }
 }

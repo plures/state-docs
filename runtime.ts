@@ -1,3 +1,5 @@
+import * as path from "@std/path";
+import { ensureDir, walk } from "@std/fs";
 
 export const isDeno = typeof (globalThis as any).Deno !== "undefined";
 
@@ -61,25 +63,25 @@ export async function loadAdapters(): Promise<Adapters> {
     };
   } else {
     const fsP = await import("node:fs/promises");
-    const path = await import("node:path");
+    const nodePath = await import("node:path");
     const fg = (await import("fast-glob")).default as unknown as (p: string[], o: any)=>Promise<string[]>;
     const mermaid: MermaidRenderer = {
       toPng(_mmd) { return Promise.resolve(null); }
     };
     const fs: FSLike = {
       readFile: p => fsP.readFile(p, "utf8"),
-      writeFile: (p, d) => fsP.writeFile(p, d, "utf8"),
+      writeFile: (p, d) => fsP.writeFile(p, d, "utf8").then(()=>{}),
       mkdirp: p => fsP.mkdir(p, { recursive: true }).then(() => {}),
-      exists: async p => !!(await fsP.stat(p).catch(()=>null)),
+      exists: p => fsP.stat(p).then(() => true).catch(() => false),
     };
     return {
       fs,
       glob: { glob: (cwd, patterns) => fg(patterns, { cwd, absolute: true }) },
       mermaid,
-      sep: path.sep,
-      join: path.join,
-      dirname: path.dirname,
-      relative: path.relative
+      sep: nodePath.sep,
+      join: nodePath.join,
+      dirname: nodePath.dirname,
+      relative: nodePath.relative
     };
   }
 }
