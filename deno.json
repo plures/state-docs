@@ -1,6 +1,6 @@
 
 {
-  "task": {
+  "tasks": {
     "gen": "deno run -A cli.ts --config=.stateDoc.json",
     "watch": "deno run -A --watch=src,fsm cli.ts --config=.stateDoc.json",
     "build:npm": "deno run -A scripts/build_npm.ts"
