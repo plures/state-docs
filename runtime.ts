@@ -1,5 +1,3 @@
-import * as path from "@std/path";
-import { ensureDir, walk } from "@std/fs";
 
 export const isDeno = typeof (globalThis as any).Deno !== "undefined";
 

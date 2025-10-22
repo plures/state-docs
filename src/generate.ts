@@ -23,7 +23,7 @@ function fakeParseMachines(_cfg: StateDocConfig, _adapters: Adapters): Promise<M
 }
 
 export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
-  const machines = fakeParseMachines(cfg);
+  const machines = await fakeParseMachines(cfg, adapters);
 
   // Ensure target dirs
   await adapters.fs.mkdirp(cfg.target);
@@ -55,7 +55,9 @@ export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
     const lines = [
       "stateDiagram-v2",
       `  [*] --> ${m.states[0]?.slug ?? "idle"}`,
-      ...m.states.flatMap(st => st.on.map(tr => `  ${st.slug} --> ${tr.target}: ${tr.event}`))
+      ...m.states.flatMap((st: { slug: string; on: { event: string; target: string }[] }) =>
+        st.on.map((tr: { event: string; target: string }) => `  ${st.slug} --> ${tr.target}: ${tr.event}`)
+      )
     ];
     await adapters.fs.writeFile(adapters.join(mdir, "diagram.mmd"), lines.join("\n"));
   }
