@@ -1,3 +1,5 @@
+import * as path from "@std/path";
+import { ensureDir, walk } from "@std/fs";
 
 export const isDeno = typeof (globalThis as any).Deno !== "undefined";
 
@@ -28,9 +30,6 @@ export interface Adapters {
 
 export async function loadAdapters(): Promise<Adapters> {
   if (isDeno) {
-    const path = await import("jsr:@std/path@^1.0.6");
-    const { ensureDir, walk } = await import("jsr:@std/fs@^1.0.4");
-
     const walkGlob = async (cwd: string, patterns: string[]) => {
       const regs = patterns.map(p => path.globToRegExp(p, { extended: true, globstar: true }));
       const out: string[] = [];
@@ -41,7 +40,7 @@ export async function loadAdapters(): Promise<Adapters> {
       return out;
     };
 
-    const mermaid: MermaidRenderer = { async toPng(_mmd) { return null; } };
+    const mermaid: MermaidRenderer = { toPng(_mmd) { return Promise.resolve(null); } };
 
     const fs: FSLike = {
       readFile: p => Deno.readTextFile(p),
@@ -54,32 +53,32 @@ export async function loadAdapters(): Promise<Adapters> {
       fs,
       glob: { glob: walkGlob },
       mermaid,
-      sep: path.SEP,
+      sep: path.SEPARATOR,
       join: path.join,
       dirname: path.dirname,
       relative: path.relative
     };
   } else {
     const fsP = await import("node:fs/promises");
-    const path = await import("node:path");
+    const nodePath = await import("node:path");
     const fg = (await import("fast-glob")).default as unknown as (p: string[], o: any)=>Promise<string[]>;
     const mermaid: MermaidRenderer = {
-      async toPng(_mmd) { return null; }
+      toPng(_mmd) { return Promise.resolve(null); }
     };
     const fs: FSLike = {
       readFile: p => fsP.readFile(p, "utf8"),
       writeFile: (p, d) => fsP.writeFile(p, d, "utf8").then(()=>{}),
-      mkdirp: async p => fsP.mkdir(p, { recursive: true }),
-      exists: async p => !!(await fsP.stat(p).catch(()=>null)),
+      mkdirp: p => fsP.mkdir(p, { recursive: true }).then(() => {}),
+      exists: p => fsP.stat(p).then(() => true).catch(() => false),
     };
     return {
       fs,
       glob: { glob: (cwd, patterns) => fg(patterns, { cwd, absolute: true }) },
       mermaid,
-      sep: path.sep,
-      join: path.join,
-      dirname: path.dirname,
-      relative: path.relative
+      sep: nodePath.sep,
+      join: nodePath.join,
+      dirname: nodePath.dirname,
+      relative: nodePath.relative
     };
   }
 }

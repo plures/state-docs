@@ -9,9 +9,9 @@ type Machine = {
 };
 
 // Placeholder parser. Replace with TS compiler API extraction.
-async function fakeParseMachines(_cfg: StateDocConfig, adapters: Adapters): Promise<Machine[]> {
+function fakeParseMachines(_cfg: StateDocConfig, _adapters: Adapters): Promise<Machine[]> {
   // Generates one demo machine so the pipeline runs end-to-end.
-  return [{
+  return Promise.resolve([{
     name: "demoMachine",
     desc: "Demo machine parsed placeholder",
     slug: "demo-machine",
@@ -19,7 +19,7 @@ async function fakeParseMachines(_cfg: StateDocConfig, adapters: Adapters): Prom
       { name: "idle", desc: "Waiting", slug: "idle", on: [{ event: "START", target: "running"}] },
       { name: "running", desc: "Working", slug: "running", on: [{ event: "STOP", target: "idle"}] }
     ]
-  }];
+  }]);
 }
 
 export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
