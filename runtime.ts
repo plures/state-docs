@@ -1,5 +1,3 @@
-import * as path from "@std/path";
-import { ensureDir, walk } from "@std/fs";
 
 export const isDeno = typeof (globalThis as any).Deno !== "undefined";
 
@@ -30,6 +28,9 @@ export interface Adapters {
 
 export async function loadAdapters(): Promise<Adapters> {
   if (isDeno) {
+    const path = await import("@std/path");
+    const { ensureDir, walk } = await import("@std/fs");
+
     const walkGlob = async (cwd: string, patterns: string[]) => {
       const regs = patterns.map(p => path.globToRegExp(p, { extended: true, globstar: true }));
       const out: string[] = [];

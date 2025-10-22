@@ -55,7 +55,9 @@ export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
     const lines = [
       "stateDiagram-v2",
       `  [*] --> ${m.states[0]?.slug ?? "idle"}`,
-      ...m.states.flatMap(st => st.on.map(tr => `  ${st.slug} --> ${tr.target}: ${tr.event}`))
+      ...m.states.flatMap((st: { slug: string; on: { event: string; target: string }[] }) =>
+        st.on.map((tr: { event: string; target: string }) => `  ${st.slug} --> ${tr.target}: ${tr.event}`)
+      )
     ];
     await adapters.fs.writeFile(adapters.join(mdir, "diagram.mmd"), lines.join("\n"));
   }

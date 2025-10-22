@@ -13,7 +13,7 @@ export type StateDocConfig = {
   visualization?: { format?: "mermaid"; exportPng?: boolean };
 };
 
-export async function runOnce(cfg: StateDocConfig) {
+export async function runOnce(cfg: StateDocConfig): Promise<void> {
   const adapters = await loadAdapters();
   return generateDocs(cfg, adapters);
 }
