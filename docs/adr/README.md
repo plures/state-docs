@@ -96,6 +96,7 @@ Each ADR should follow the template structure:
 | Number | Title | Status | Date |
 |--------|-------|--------|------|
 | [0001](0001-adopt-adr-process.md) | Adopt ADR Process | Accepted | 2025-11-03 |
+| [0002](0002-use-deno-as-primary-runtime.md) | Use Deno as Primary Runtime | Accepted | 2025-11-03 |
 
 ---
 
