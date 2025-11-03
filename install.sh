@@ -102,4 +102,3 @@ echo "  • Deno:    curl -fsSL https://deno.land/install.sh | sh"
 echo "  • Node.js: https://nodejs.org/"
 echo ""
 echo "Then run this installer again."
-exit 1

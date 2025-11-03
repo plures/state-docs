@@ -10,6 +10,16 @@ function parseArgs(argv: string[]) {
 const argv = (globalThis as any).Deno ? (Deno.args as string[]) : (await import("node:process")).argv.slice(2);
 const { cmd, configPath } = parseArgs(argv);
 
+function exitWithCode(code: number): never {
+  if ((globalThis as any).Deno) {
+    Deno.exit(code);
+  } else {
+    process.exit(code);
+  }
+  // TypeScript needs this for type checking
+  throw new Error("Exit failed");
+}
+
 async function readText(p: string) {
   try {
     if ((globalThis as any).Deno) return await Deno.readTextFile(p);
@@ -17,7 +27,7 @@ async function readText(p: string) {
     return await fs.readFile(p, "utf8");
   } catch (_e) {
     console.error(`Missing or unreadable config: ${p}`);
-    (globalThis as any).Deno?.exit?.(1); (globalThis as any).process?.exit?.(1);
+    exitWithCode(1);
   }
 }
 
@@ -49,7 +59,7 @@ async function initConfig(path: string) {
   if (await fileExists(path)) {
     console.error(`Config file already exists: ${path}`);
     console.log("Use a different path or remove the existing file.");
-    (globalThis as any).Deno?.exit?.(1); (globalThis as any).process?.exit?.(1);
+    exitWithCode(1);
   }
 
   const defaultConfig = {
@@ -84,6 +94,6 @@ if (cmd === "init") {
   console.log("\nAvailable commands:");
   console.log("  init  - Create a new .stateDoc.json config file");
   console.log("  gen   - Generate documentation (default)");
-  (globalThis as any).Deno?.exit?.(1); (globalThis as any).process?.exit?.(1);
+  exitWithCode(1);
 }
 // 'watch' could be added with chokidar/Deno.watchFs via adapters
