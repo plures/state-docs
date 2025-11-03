@@ -86,10 +86,10 @@ if (Test-Command "npx") {
 # No suitable runtime found
 Write-Error "Could not find Deno or Node.js/npm."
 Write-Host ""
-Write-Host "Please install one of the following:"
+Write-Host "Please install one of the following:" -ForegroundColor Red
 Write-Host ""
-Write-Host "  • Deno:    irm https://deno.land/install.ps1 | iex"
-Write-Host "  • Node.js: https://nodejs.org/"
+Write-Host "  • Deno:    irm https://deno.land/install.ps1 | iex" -ForegroundColor Red
+Write-Host "  • Node.js: https://nodejs.org/" -ForegroundColor Red
 Write-Host ""
-Write-Host "Then run this installer again."
+Write-Host "Then run this installer again." -ForegroundColor Red
 exit 1

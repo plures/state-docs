@@ -20,7 +20,7 @@ function exitWithCode(code: number): never {
   throw new Error("Exit failed");
 }
 
-async function readText(p: string) {
+async function readText(p: string): Promise<string> {
   try {
     if ((globalThis as any).Deno) return await Deno.readTextFile(p);
     const fs = await import("node:fs/promises");
@@ -87,7 +87,7 @@ if (cmd === "init") {
   await initConfig(configPath);
 } else if (cmd === "gen") {
   const cfgText = await readText(configPath);
-  const cfg = JSON.parse(cfgText!);
+  const cfg = JSON.parse(cfgText);
   await runOnce(cfg);
 } else {
   console.error(`Unknown command: ${cmd}`);

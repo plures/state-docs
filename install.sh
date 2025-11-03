@@ -94,11 +94,12 @@ if command_exists npx; then
 fi
 
 # No suitable runtime found
-error "Could not find Deno or Node.js/npm."
 echo ""
-echo "Please install one of the following:"
-echo ""
-echo "  • Deno:    curl -fsSL https://deno.land/install.sh | sh"
-echo "  • Node.js: https://nodejs.org/"
-echo ""
-echo "Then run this installer again."
+error "Could not find Deno or Node.js/npm.
+
+Please install one of the following:
+
+  • Deno:    curl -fsSL https://deno.land/install.sh | sh
+  • Node.js: https://nodejs.org/
+
+Then run this installer again."
