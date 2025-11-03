@@ -77,5 +77,5 @@ Key aspects of this decision:
 
 - [Deno Manual](https://docs.deno.com/)
 - [dnt - Deno to Node Transform](https://github.com/denoland/dnt)
-- [runtime.ts - Runtime adapters](../../../runtime.ts)
-- [deno.json - Deno configuration](../../../deno.json)
+- [runtime.ts - Runtime adapters](../../runtime.ts)
+- [deno.json - Deno configuration](../../deno.json)
