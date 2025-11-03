@@ -2,7 +2,11 @@
 {
   "name": "@plures/statedoc",
   "version": "0.0.1",
-  "exports": "./mod.ts",
+  "exports": {
+    ".": "./mod.ts",
+    "./cli": "./cli.ts"
+  },
+  "license": "MIT",
   "tasks": {
     "gen": "deno run -A cli.ts --config=.stateDoc.json",
     "watch": "deno run -A --watch=src,fsm cli.ts --config=.stateDoc.json",

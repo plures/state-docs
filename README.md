@@ -3,7 +3,45 @@
 
 FSM documentation generator for XState projects. One ESM codebase. Runs on Deno or Node. Generates Markdown and Mermaid from machines and states.
 
-## Quick start
+## Installation
+
+### Quick Install (Recommended)
+
+**Linux/macOS:**
+```sh
+curl -fsSL https://raw.githubusercontent.com/plures/state-docs/main/install.sh | sh
+```
+
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/plures/state-docs/main/install.ps1 | iex
+```
+
+### Manual Installation
+
+#### Via Deno (JSR)
+```sh
+deno install -A -n statedoc jsr:@plures/statedoc/cli
+```
+
+#### Via npm
+```sh
+npm install -g statedoc
+```
+
+#### Via npx (No Installation Required)
+```sh
+npx statedoc gen --config=.stateDoc.json
+```
+
+## Quick Start
+
+After installation, generate documentation:
+```sh
+statedoc gen --config=.stateDoc.json
+```
+
+### For Development
 
 Deno:
 ```sh
