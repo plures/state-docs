@@ -41,6 +41,45 @@ After installation, generate documentation:
 statedoc gen --config=.stateDoc.json
 ```
 
+### Adding to an Existing Project
+
+1. Install state-docs (choose one method from above)
+2. Initialize a configuration file:
+
+```sh
+statedoc init
+```
+
+This creates a `.stateDoc.json` file with sensible defaults:
+
+```json
+{
+  "projectTitle": "My Project",
+  "source": "./src",
+  "target": "./docs",
+  "globs": ["**/*.ts", "**/*.js"],
+  "visualization": {
+    "format": "mermaid",
+    "exportPng": false
+  }
+}
+```
+
+3. Edit the config file to match your project structure
+4. Run the generator:
+```sh
+statedoc gen
+```
+
+5. (Optional) Add to your package.json scripts:
+```json
+{
+  "scripts": {
+    "docs": "statedoc gen"
+  }
+}
+```
+
 ### For Development
 
 Deno:
