@@ -87,8 +87,17 @@ if (cmd === "init") {
   await initConfig(configPath);
 } else if (cmd === "gen") {
   const cfgText = await readText(configPath);
-  const cfg = JSON.parse(cfgText);
-  await runOnce(cfg);
+  try {
+    const cfg = JSON.parse(cfgText);
+    await runOnce(cfg);
+  } catch (e) {
+    console.error(`Invalid JSON in config file: ${configPath}`);
+    console.error("Please check the file for syntax errors.");
+    if (e instanceof SyntaxError) {
+      console.error(`Parse error: ${e.message}`);
+    }
+    exitWithCode(1);
+  }
 } else {
   console.error(`Unknown command: ${cmd}`);
   console.log("\nAvailable commands:");

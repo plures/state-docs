@@ -95,11 +95,12 @@ fi
 
 # No suitable runtime found
 echo ""
-error "Could not find Deno or Node.js/npm.
-
-Please install one of the following:
-
-  • Deno:    curl -fsSL https://deno.land/install.sh | sh
-  • Node.js: https://nodejs.org/
-
-Then run this installer again."
+printf "${RED}✗${NC} Could not find Deno or Node.js/npm.\n"
+echo ""
+echo "Please install one of the following:"
+echo ""
+echo "  • Deno:    curl -fsSL https://deno.land/install.sh | sh"
+echo "  • Node.js: https://nodejs.org/"
+echo ""
+echo "Then run this installer again."
+exit 1
