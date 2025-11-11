@@ -1,7 +1,7 @@
 
 {
   "name": "statedoc",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "FSM documentation generator for Deno + Node",
   "license": "MIT",
   "type": "module",

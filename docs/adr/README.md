@@ -7,6 +7,7 @@ This directory contains Architectural Decision Records (ADRs) for the state-docs
 An Architectural Decision Record (ADR) is a document that captures an important architectural decision made along with its context and consequences.
 
 ADRs help us:
+
 - **Document** key technical decisions and their rationale
 - **Communicate** architectural choices to current and future team members
 - **Preserve** institutional knowledge
@@ -48,16 +49,18 @@ ADRs follow this lifecycle:
 
 ADRs should be named using the following pattern:
 
-```
+```text
 NNNN-short-descriptive-title.md
 ```
 
 Where:
+
 - `NNNN` is a sequential number (e.g., 0001, 0002, 0003)
 - `short-descriptive-title` uses kebab-case
 - Always use lowercase letters
 
 Examples:
+
 - `0001-adopt-adr-process.md`
 - `0002-choose-deno-runtime.md`
 - `0003-use-mermaid-for-diagrams.md`
@@ -100,4 +103,6 @@ Each ADR should follow the template structure:
 
 ---
 
-*Last updated: 2025-11-03*
+## Last Updated
+
+2025-11-03
