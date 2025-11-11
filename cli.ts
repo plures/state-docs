@@ -2,7 +2,9 @@
 import { runOnce } from "./mod.ts";
 
 function parseArgs(argv: string[]) {
-  const cmd = argv[0] ?? "gen";
+  // Filter out --config argument to get the actual command
+  const args = argv.filter(a => !a.startsWith("--config="));
+  const cmd = args[0] ?? "gen";
   const configPath = argv.find(a => a.startsWith("--config="))?.split("=")[1] ?? ".stateDoc.json";
   return { cmd, configPath };
 }
