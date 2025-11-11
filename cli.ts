@@ -9,11 +9,13 @@ function parseArgs(argv: string[]) {
   return { cmd, configPath };
 }
 
-const argv = (globalThis as any).Deno ? (Deno.args as string[]) : (await import("node:process")).argv.slice(2);
+// Use a safer check that works with dnt's WASM transformer
+const isDeno = typeof globalThis !== "undefined" && "Deno" in globalThis;
+const argv = isDeno ? (Deno.args as string[]) : (await import("node:process")).argv.slice(2);
 const { cmd, configPath } = parseArgs(argv);
 
 async function exitWithCode(code: number): Promise<never> {
-  if ((globalThis as any).Deno) {
+  if (isDeno) {
     Deno.exit(code);
   } else {
     const mod = await import("node:process");
@@ -25,7 +27,7 @@ async function exitWithCode(code: number): Promise<never> {
 
 async function readText(p: string): Promise<string> {
   try {
-    if ((globalThis as any).Deno) return await Deno.readTextFile(p);
+    if (isDeno) return await Deno.readTextFile(p);
     const fs = await import("node:fs/promises");
     return await fs.readFile(p, "utf8");
   } catch (_e) {
@@ -35,7 +37,7 @@ async function readText(p: string): Promise<string> {
 }
 
 async function writeText(p: string, content: string) {
-  if ((globalThis as any).Deno) {
+  if (isDeno) {
     await Deno.writeTextFile(p, content);
   } else {
     const fs = await import("node:fs/promises");
@@ -45,7 +47,7 @@ async function writeText(p: string, content: string) {
 
 async function fileExists(p: string): Promise<boolean> {
   try {
-    if ((globalThis as any).Deno) {
+    if (isDeno) {
       await Deno.stat(p);
       return true;
     } else {
