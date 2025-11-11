@@ -11,8 +11,6 @@ function parseArgs(argv: string[]) {
 
 // Use a safer check that works with dnt's WASM transformer
 const isDeno = typeof globalThis !== "undefined" && "Deno" in globalThis;
-const argv = isDeno ? (Deno.args as string[]) : (await import("node:process")).argv.slice(2);
-const { cmd, configPath } = parseArgs(argv);
 
 async function exitWithCode(code: number): Promise<never> {
   if (isDeno) {
@@ -33,6 +31,7 @@ async function readText(p: string): Promise<string> {
   } catch (_e) {
     console.error(`Missing or unreadable config: ${p}`);
     await exitWithCode(1);
+    return ""; // TypeScript needs this even though exitWithCode never returns
   }
 }
 
@@ -88,26 +87,42 @@ async function initConfig(path: string) {
   console.log("\nRun 'statedoc gen' to generate documentation.");
 }
 
-if (cmd === "init") {
-  await initConfig(configPath);
-} else if (cmd === "gen") {
-  const cfgText = await readText(configPath);
-  try {
-    const cfg = JSON.parse(cfgText);
-    await runOnce(cfg);
-  } catch (e) {
-    console.error(`Invalid JSON in config file: ${configPath}`);
-    console.error("Please check the file for syntax errors.");
-    if (e instanceof SyntaxError) {
-      console.error(`Parse error: ${e.message}`);
+// Main function to avoid top-level await which is incompatible with CommonJS
+async function main() {
+  const argv = isDeno ? Deno.args : (await import("node:process")).argv.slice(2);
+  const { cmd, configPath } = parseArgs(argv);
+
+  if (cmd === "init") {
+    await initConfig(configPath);
+  } else if (cmd === "gen") {
+    const cfgText = await readText(configPath);
+    try {
+      const cfg = JSON.parse(cfgText);
+      await runOnce(cfg);
+    } catch (e) {
+      console.error(`Invalid JSON in config file: ${configPath}`);
+      console.error("Please check the file for syntax errors.");
+      if (e instanceof SyntaxError) {
+        console.error(`Parse error: ${e.message}`);
+      }
+      await exitWithCode(1);
     }
+  } else {
+    console.error(`Unknown command: ${cmd}`);
+    console.log("\nAvailable commands:");
+    console.log("  init  - Create a new .stateDoc.json config file");
+    console.log("  gen   - Generate documentation (default)");
     await exitWithCode(1);
   }
-} else {
-  console.error(`Unknown command: ${cmd}`);
-  console.log("\nAvailable commands:");
-  console.log("  init  - Create a new .stateDoc.json config file");
-  console.log("  gen   - Generate documentation (default)");
-  await exitWithCode(1);
 }
+
+// Run the main function
+main().catch((e) => {
+  console.error("Fatal error:", e);
+  if (isDeno) {
+    Deno.exit(1);
+  } else {
+    import("node:process").then(mod => mod.default.exit(1));
+  }
+});
 // 'watch' could be added with chokidar/Deno.watchFs via adapters
