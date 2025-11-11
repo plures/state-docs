@@ -1,13 +1,76 @@
-# Contributing to State-Docs
+# Contributing to state-docs
 
-Thank you for your interest in contributing to State-Docs! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to state-docs! This document provides guidelines and information to help you contribute effectively.
+
+## How to Contribute
+
+### Reporting Issues
+
+- Search existing issues before creating a new one
+- Provide clear reproduction steps
+- Include relevant system information (OS, Deno/Node version, etc.)
+- Use issue templates when available
+
+### Submitting Pull Requests
+
+1. **Fork the repository** and create a new branch from `main`
+2. **Make your changes** following our coding standards
+3. **Test your changes** thoroughly
+   - Run `deno task gen` to test documentation generation
+   - Verify both Deno and Node.js compatibility if applicable
+4. **Write or update tests** if needed
+5. **Update documentation** if you're changing functionality
+6. **Create an ADR** if making significant architectural decisions (see below)
+7. **Submit a pull request** with a clear description of your changes
+
+### Coding Standards
+
+- Follow the existing code style
+- Use TypeScript strict mode
+- Write clear, descriptive commit messages
+- Keep commits focused and atomic
+- Ensure code works in both Deno and Node.js runtimes (where applicable)
+
+## Architectural Decision Records (ADRs)
+
+For significant technical decisions, we use ADRs to document the context, decision, and consequences. This helps maintain institutional knowledge and provides transparency in our decision-making process.
+
+### When to Write an ADR
+
+Create an ADR when making decisions about:
+- Project structure and organization
+- Technology stack choices
+- Design patterns and architectural patterns
+- API designs and contracts
+- Build and deployment processes
+- Testing strategies
+- Major dependencies
+- Performance optimizations
+- Security approaches
+
+### How to Create an ADR
+
+1. Copy the [ADR template](docs/adr/template.md)
+2. Create a new file: `docs/adr/NNNN-your-decision-title.md`
+   - Use the next sequential number (check existing ADRs)
+   - Use kebab-case for the title
+3. Fill in all sections of the template:
+   - Context: What problem are you solving?
+   - Decision: What solution did you choose?
+   - Consequences: What are the tradeoffs?
+   - Alternatives: What else did you consider?
+4. Submit the ADR as part of your pull request
+5. Update the ADR index in [docs/adr/README.md](docs/adr/README.md)
+
+See [docs/adr/README.md](docs/adr/README.md) for more details on our ADR process.
 
 ## Development Setup
 
 ### Prerequisites
 
-- Deno 2.x (primary runtime) - Install via: `curl -fsSL https://deno.land/install.sh | sh`
-- Node.js 18+ (for npm package testing) - Optional but recommended
+- Deno 2.x or later
+- Node.js (for building the npm package)
+- Git
 
 ### Getting Started
 
@@ -17,160 +80,85 @@ Thank you for your interest in contributing to State-Docs! This document provide
    cd state-docs
    ```
 
-2. Run the development tasks:
+2. Run the documentation generator:
    ```sh
-   # Generate documentation from example FSM files
    deno task gen
-   
-   # Watch mode for development
-   deno task watch
-   
-   # Build npm package
-   deno task build:npm
    ```
 
-### Project Structure
+3. Check linting:
+   ```sh
+   deno lint
+   ```
 
-```
-.
-├── src/              # Core source code
-│   ├── generate.ts   # Documentation generation logic
-│   └── tpl.ts        # Template rendering utilities
-├── scripts/          # Build and tooling scripts
-│   └── build_npm.ts  # npm package builder
-├── cli.ts            # Command-line interface
-├── mod.ts            # Main module exports
-├── runtime.ts        # Runtime adapters (Deno/Node)
-└── deno.json         # Deno configuration & dependencies
-```
+4. Type check:
+   ```sh
+   deno check mod.ts
+   ```
 
-## Making Changes
+### Testing
 
-### Code Style
-
-- Write TypeScript with strict typing
-- Use `async/await` for asynchronous operations
-- Follow the existing code formatting
-- Run `deno lint` before committing (some warnings are acceptable)
-
-### Dual-Runtime Compatibility
-
-**Important**: All code must work in both Deno and Node.js!
-
-- Use the adapter pattern in `runtime.ts` for platform-specific operations
-- Never use direct `Deno.*` or `node:*` imports in shared code
-- Test your changes in both runtimes when possible
-
-### Running Tests
+Currently, the project uses end-to-end testing by running the documentation generator:
 
 ```sh
-# Type checking
-deno check mod.ts
-
-# Linting (some warnings expected)
-deno lint
-
-# Generate docs to test functionality
 deno task gen
 ```
 
-### Building the npm Package
+Verify that:
+- Configuration is read correctly from `.stateDoc.json`
+- Documentation files are generated in the target directory
+- Mermaid diagrams are created
+- No errors are thrown
+
+### Building for npm
+
+To build the npm package:
 
 ```sh
-# Build with dnt
 deno task build:npm
-
-# Test the built package
-cd npm
-npm install -g .
-statedoc init
-statedoc gen
 ```
 
-## Submitting Changes
+This creates a `npm/` directory with the Node.js-compatible package.
 
-### Pull Request Process
+## Project Structure
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes
-4. Run linting and type checking
-5. Test in both Deno and Node (if possible)
-6. Commit with clear messages
-7. Push to your fork
-8. Open a Pull Request
-
-### Commit Message Guidelines
-
-- Use clear, descriptive commit messages
-- Start with a verb (Add, Fix, Update, Remove, etc.)
-- Reference issues when applicable
-
-Example:
 ```
-Add support for custom templates
-
-- Allow users to specify custom Eta templates
-- Update config schema with templates field
-- Add example templates to documentation
-
-Fixes #123
+.
+├── .github/           # GitHub configuration and workflows
+├── docs/              # Documentation
+│   └── adr/          # Architectural Decision Records
+├── src/               # Source code
+│   ├── generate.ts   # Main documentation generation logic
+│   ├── tpl.ts        # Template rendering utilities
+│   └── fsm/          # Example FSM files
+├── scripts/           # Build scripts
+│   └── build_npm.ts  # npm package builder
+├── cli.ts             # Command-line interface
+├── mod.ts             # Main module exports
+├── runtime.ts         # Runtime adapters for Deno/Node
+├── deno.json          # Deno configuration
+└── .stateDoc.json     # Example configuration
 ```
 
-## Publishing (Maintainers Only)
+## Code Review Process
 
-### Release Process
+All submissions require review before merging:
 
-1. Ensure all tests pass and changes are merged to main
-2. Create a version tag:
-   ```sh
-   git tag v1.0.0
-   git push origin v1.0.0
-   ```
-3. GitHub Actions will automatically:
-   - Update version in `deno.json` and `package.json.template`
-   - Build and publish to JSR
-   - Build and publish to npm
-   - Create a GitHub release
+1. **Automated checks**: CI must pass (linting, type checking)
+2. **Code review**: At least one maintainer approval required
+3. **Testing**: Changes should be tested in relevant runtimes
+4. **Documentation**: Update docs if changing functionality
+5. **ADR review**: If submitting an ADR, ensure team discussion occurs
 
-### Version Numbering
+## Questions?
 
-Follow [Semantic Versioning](https://semver.org/):
-- MAJOR: Breaking changes
-- MINOR: New features (backwards compatible)
-- PATCH: Bug fixes
-
-## Adding Dependencies
-
-### For Deno/JSR packages:
-Add to `deno.json` imports:
-```json
-{
-  "imports": {
-    "new-package": "jsr:@scope/package@^1.0.0"
-  }
-}
-```
-
-### For npm packages:
-1. Add to `deno.json` imports with `npm:` specifier:
-   ```json
-   {
-     "imports": {
-       "new-package": "npm:package@^1.0.0"
-     }
-   }
-   ```
-2. The npm build process (dnt) will handle it automatically
-
-**Security Note**: Always run security checks before adding new dependencies.
-
-## Getting Help
-
-- Open an issue for bug reports or feature requests
-- Check existing issues before creating new ones
-- Be respectful and constructive in discussions
+- Open an issue for general questions
+- Check existing ADRs for architectural context
+- Review closed issues and PRs for similar discussions
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
+By contributing, you agree that your contributions will be licensed under the project's MIT License.
+
+---
+
+Thank you for contributing to state-docs! 🎉

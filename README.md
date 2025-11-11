@@ -95,6 +95,14 @@ npm install -g .
 statedoc gen --config=.stateDoc.json
 ```
 
+## Governance
+
+This project uses Architectural Decision Records (ADRs) to document significant technical and architectural decisions. ADRs help us maintain a clear record of why we made certain choices and provide context for future development.
+
+📖 **View all ADRs**: [docs/adr/README.md](docs/adr/README.md)
+
+When making significant decisions about architecture, design patterns, technology choices, or processes, please document them as ADRs following our [ADR template](docs/adr/template.md).
+
 ## Publishing
 
 The project includes an automated publishing pipeline that triggers when a new version tag is created.
