@@ -1,5 +1,7 @@
 
-export const isDeno = typeof (globalThis as any).Deno !== "undefined";
+// Use a safer check that works with dnt's WASM transformer
+// The 'in' operator checks for property existence without triggering Reflect.get issues
+export const isDeno = typeof globalThis !== "undefined" && "Deno" in globalThis;
 
 export interface FSLike {
   readFile(p: string): Promise<string>;
