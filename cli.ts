@@ -1,4 +1,5 @@
-#!/usr/bin/env -S deno run -A
+// CLI entrypoint for statedoc
+// When built with dnt, this becomes an npm binary with #!/usr/bin/env node
 import { runOnce } from "./mod.ts";
 
 function parseArgs(argv: string[]) {
