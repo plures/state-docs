@@ -1,13 +1,81 @@
 
 name: CI
-on: [push, pull_request]
+
+on: 
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
 jobs:
-  build:
+  lint-and-typecheck:
+    name: Lint and Type Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: denoland/setup-deno@v2
-        with: { deno-version: v2.x }
-      - run: deno lint || true
-      - run: deno check mod.ts
-      - run: deno task gen
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with: 
+          deno-version: v2.x
+      
+      - name: Lint code
+        run: deno lint || true
+      
+      - name: Type check
+        run: deno check mod.ts
+  
+  test-deno:
+    name: Test with Deno
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with: 
+          deno-version: v2.x
+      
+      - name: Generate documentation (integration test)
+        run: deno task gen
+      
+      - name: Verify generated files exist
+        run: |
+          test -f docs/businessLogic/index.md || (echo "index.md not generated" && exit 1)
+          echo "✓ Documentation generated successfully"
+      
+      - name: Test shopping cart example
+        working-directory: examples/shopping-cart
+        run: |
+          deno run -A ../../cli.ts gen --config=.stateDoc.json
+          test -d docs || (echo "Example docs not generated" && exit 1)
+          echo "✓ Shopping cart example works"
+  
+  test-npm-build:
+    name: Test npm Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with: 
+          deno-version: v2.x
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Build npm package
+        run: deno task build:npm
+      
+      - name: Verify npm package structure
+        run: |
+          test -f npm/package.json || (echo "package.json not generated" && exit 1)
+          test -f npm/esm/mod.js || (echo "ESM module not generated" && exit 1)
+          echo "✓ npm package built successfully"
+

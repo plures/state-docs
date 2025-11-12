@@ -2,7 +2,55 @@
 
 Thank you for your interest in contributing to state-docs! This document provides guidelines and information to help you contribute effectively.
 
+## Quick Links
+
+- 🗺️ [ROADMAP.md](./ROADMAP.md) - See what we're working on
+- 🏷️ [Good First Issues](https://github.com/plures/state-docs/labels/good%20first%20issue) - Beginner-friendly tasks
+- 💬 [Discussions](https://github.com/plures/state-docs/discussions) - Ask questions and share ideas
+- 📋 [Issue Templates](./.github/ISSUE_TEMPLATE/) - Report bugs or request features
+
 ## How to Contribute
+
+### For New Contributors
+
+**Start here if you're new to the project:**
+
+1. ⭐ **Star the repository** to show your support
+2. 👀 **Browse [Good First Issues](https://github.com/plures/state-docs/labels/good%20first%20issue)** - These are beginner-friendly tasks
+3. 💬 **Comment on an issue** you'd like to work on so others know you're taking it
+4. 🔀 **Fork the repository** and create a branch
+5. 🛠️ **Make your changes** following our guidelines below
+6. ✅ **Test thoroughly** and ensure CI passes
+7. 🚀 **Submit a pull request** with a clear description
+
+### Types of Contributions We Welcome
+
+- 🐛 **Bug fixes** - Fix issues that are causing problems
+- ✨ **Features** - Add new functionality (check roadmap first)
+- 📝 **Documentation** - Improve README, guides, or code comments
+- 🧪 **Tests** - Add test coverage for existing features
+- 🎨 **Examples** - Create new example state machines
+- 🌍 **Translations** - Help us reach more developers
+- 🗣️ **Community** - Answer questions, review PRs, share the project
+
+### Good First Issues
+
+We label issues with **`good first issue`** to help new contributors get started. These issues typically:
+
+- ✅ Have clear requirements and scope
+- ✅ Don't require deep knowledge of the codebase
+- ✅ Have guidance from maintainers
+- ✅ Are self-contained and focused
+
+**Current Good First Issue areas:**
+- Adding more examples (e.g., authentication flow, modal state machine)
+- Improving error messages
+- Adding JSDoc comments to functions
+- Writing integration tests
+- Improving CLI help text
+- Adding configuration validation
+
+[View all Good First Issues →](https://github.com/plures/state-docs/labels/good%20first%20issue)
 
 ### Reporting Issues
 
