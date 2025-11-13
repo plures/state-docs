@@ -1,0 +1,10 @@
+{
+  "projectTitle": "Shopping Cart Example",
+  "source": ".",
+  "target": "./docs",
+  "globs": ["*.machine.ts"],
+  "visualization": {
+    "format": "mermaid",
+    "exportPng": false
+  }
+}
