@@ -1,0 +1,16 @@
+stateDiagram-v2
+  [*] --> empty
+  empty --> active: ADD_ITEM
+  active --> active: ADD_ITEM
+  active --> active: REMOVE_ITEM
+  active --> active: UPDATE_QUANTITY
+  active --> checkout: PROCEED_TO_CHECKOUT
+  active --> empty: CLEAR_CART
+  checkout-shipping --> payment: ADD_SHIPPING
+  checkout-shipping --> active: RETURN_TO_CART
+  checkout-payment --> processing: ADD_PAYMENT
+  checkout-payment --> active: RETURN_TO_CART
+  processing --> completed: PAYMENT_SUCCESS
+  processing --> failed: PAYMENT_FAILED
+  failed --> active: RETURN_TO_CART
+  failed --> empty: CLEAR_CART
