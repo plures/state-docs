@@ -81,7 +81,7 @@ function parseMachineObject(machineObj: any, varName: string): Machine {
  * Extract machine definitions from a JavaScript/TypeScript file
  * This is a runtime evaluation approach - we import the file and extract exported machines
  */
-async function extractMachinesFromFile(filePath: string, adapters: Adapters): Promise<Machine[]> {
+async function extractMachinesFromFile(filePath: string, _adapters: Adapters): Promise<Machine[]> {
   try {
     // Convert to absolute file:// URL
     let importPath = filePath;

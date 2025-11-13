@@ -5,4 +5,5 @@ node_modules/
 dist/
 coverage/
 docs/businessLogic/
+docs/test-output/
 examples/*/docs/

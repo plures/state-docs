@@ -41,6 +41,15 @@ export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
         st.on.map((tr: { event: string; target: string }) => `  ${st.slug} --> ${tr.target}: ${tr.event}`)
       )
     ];
-    await adapters.fs.writeFile(adapters.join(mdir, "diagram.mmd"), lines.join("\n"));
+    const mermaidText = lines.join("\n");
+    await adapters.fs.writeFile(adapters.join(mdir, "diagram.mmd"), mermaidText);
+    
+    // Export PNG if configured (feature not yet implemented, will be null)
+    if (cfg.visualization?.exportPng) {
+      const pngData = await adapters.mermaid.toPng(mermaidText);
+      if (pngData) {
+        await adapters.fs.writeBinaryFile(adapters.join(mdir, "diagram.png"), pngData);
+      }
+    }
   }
 }
