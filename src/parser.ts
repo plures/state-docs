@@ -92,7 +92,8 @@ async function extractMachinesFromFile(filePath: string, _adapters: Adapters): P
       // Make it absolute if it's not already
       if (!importPath.startsWith('/')) {
         if (isDeno) {
-          importPath = `${(globalThis as any).Deno.cwd()}/${importPath}`;
+          // Safe to access Deno directly after checking isDeno
+          importPath = `${Deno.cwd()}/${importPath}`;
         } else {
           const process = await import("node:process");
           importPath = `${process.cwd()}/${importPath}`;
