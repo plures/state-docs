@@ -67,7 +67,7 @@ jobs:
               try {
                 denoJson = JSON.parse(fileContent);
               } catch (err) {
-                throw new Error(\`Invalid JSON in \${filePath}: \${err.message}\`);
+                throw new Error(\`Invalid JSON in \${filePath}: \${err instanceof Error ? err.message : String(err)}\`);
               }
               
               // Ensure denoJson is an object
@@ -83,7 +83,7 @@ jobs:
               
               console.log(\`Successfully updated \${filePath} to version \${version}\`);
             } catch (err) {
-              console.error('Error updating deno.json:', err.message);
+              console.error('Error updating deno.json:', err instanceof Error ? err.message : String(err));
               Deno.exit(1);
             }
           "
@@ -121,7 +121,7 @@ jobs:
               try {
                 pkgJson = JSON.parse(fileContent);
               } catch (err) {
-                throw new Error(\`Invalid JSON in \${filePath}: \${err.message}\`);
+                throw new Error(\`Invalid JSON in \${filePath}: \${err instanceof Error ? err.message : String(err)}\`);
               }
               
               // Ensure pkgJson is an object
@@ -137,7 +137,7 @@ jobs:
               
               console.log(\`Successfully updated \${filePath} to version \${version}\`);
             } catch (err) {
-              console.error('Error updating package.json.template:', err.message);
+              console.error('Error updating package.json.template:', err instanceof Error ? err.message : String(err));
               Deno.exit(1);
             }
           "
