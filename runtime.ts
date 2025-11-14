@@ -6,6 +6,7 @@ export const isDeno = typeof globalThis !== "undefined" && "Deno" in globalThis;
 export interface FSLike {
   readFile(p: string): Promise<string>;
   writeFile(p: string, data: string): Promise<void>;
+  writeBinaryFile(p: string, data: Uint8Array): Promise<void>;
   mkdirp(p: string): Promise<void>;
   exists(p: string): Promise<boolean>;
 }
@@ -48,6 +49,7 @@ export async function loadAdapters(): Promise<Adapters> {
     const fs: FSLike = {
       readFile: p => Deno.readTextFile(p),
       writeFile: (p, d) => Deno.writeTextFile(p, d),
+      writeBinaryFile: (p, d) => Deno.writeFile(p, d),
       mkdirp: p => ensureDir(p),
       exists: p => Deno.stat(p).then(()=>true).catch(()=>false),
     };
@@ -71,6 +73,7 @@ export async function loadAdapters(): Promise<Adapters> {
     const fs: FSLike = {
       readFile: p => fsP.readFile(p, "utf8"),
       writeFile: (p, d) => fsP.writeFile(p, d, "utf8").then(()=>{}),
+      writeBinaryFile: (p, d) => fsP.writeFile(p, d).then(()=>{}),
       mkdirp: p => fsP.mkdir(p, { recursive: true }).then(() => {}),
       exists: p => fsP.stat(p).then(() => true).catch(() => false),
     };

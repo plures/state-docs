@@ -1,7 +1,6 @@
-import { Eta } from "eta";
+import Handlebars from "handlebars";
 
 export function renderTemplate(tpl: string, data: object): string {
-  const eta = new Eta();
-  return eta.renderString(tpl, data) as string;
-
+  const template = Handlebars.compile(tpl);
+  return template(data);
 }

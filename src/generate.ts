@@ -2,28 +2,10 @@
 import type { Adapters } from "../runtime.ts";
 import type { StateDocConfig } from "../mod.ts";
 import { renderTemplate } from "./tpl.ts";
-
-type Machine = {
-  name: string; desc: string; slug: string;
-  states: { name: string; desc: string; slug: string; on: { event: string; target: string }[] }[];
-};
-
-// Placeholder parser. Replace with TS compiler API extraction.
-function fakeParseMachines(_cfg: StateDocConfig, _adapters: Adapters): Promise<Machine[]> {
-  // Generates one demo machine so the pipeline runs end-to-end.
-  return Promise.resolve([{
-    name: "demoMachine",
-    desc: "Demo machine parsed placeholder",
-    slug: "demo-machine",
-    states: [
-      { name: "idle", desc: "Waiting", slug: "idle", on: [{ event: "START", target: "running"}] },
-      { name: "running", desc: "Working", slug: "running", on: [{ event: "STOP", target: "idle"}] }
-    ]
-  }]);
-}
+import { parseMachines } from "./parser.ts";
 
 export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
-  const machines = await fakeParseMachines(cfg, adapters);
+  const machines = await parseMachines(cfg, adapters);
 
   // Ensure target dirs
   await adapters.fs.mkdirp(cfg.target);
@@ -59,6 +41,15 @@ export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
         st.on.map((tr: { event: string; target: string }) => `  ${st.slug} --> ${tr.target}: ${tr.event}`)
       )
     ];
-    await adapters.fs.writeFile(adapters.join(mdir, "diagram.mmd"), lines.join("\n"));
+    const mermaidText = lines.join("\n");
+    await adapters.fs.writeFile(adapters.join(mdir, "diagram.mmd"), mermaidText);
+    
+    // Export PNG if configured (feature not yet implemented, will be null)
+    if (cfg.visualization?.exportPng) {
+      const pngData = await adapters.mermaid.toPng(mermaidText);
+      if (pngData) {
+        await adapters.fs.writeBinaryFile(adapters.join(mdir, "diagram.png"), pngData);
+      }
+    }
   }
 }
