@@ -39,11 +39,53 @@ jobs:
       - name: Update deno.json version
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          # Use jq to update the version field
+          if [ -z "$VERSION" ]; then
+            echo "Error: VERSION is empty"
+            exit 1
+          fi
+          # Use deno eval with error handling
           deno eval "
-            const denoJson = JSON.parse(await Deno.readTextFile('deno.json'));
-            denoJson.version = '${VERSION}';
-            await Deno.writeTextFile('deno.json', JSON.stringify(denoJson, null, 2) + '\n');
+            try {
+              const filePath = 'deno.json';
+              const version = '${VERSION}';
+              
+              // Validate inputs
+              if (!version || version.trim() === '') {
+                throw new Error('Version is empty or invalid');
+              }
+              
+              // Check if file exists
+              try {
+                await Deno.stat(filePath);
+              } catch (err) {
+                throw new Error(\`File not found: \${filePath}\`);
+              }
+              
+              // Read and parse JSON
+              const fileContent = await Deno.readTextFile(filePath);
+              let denoJson;
+              try {
+                denoJson = JSON.parse(fileContent);
+              } catch (err) {
+                throw new Error(\`Invalid JSON in \${filePath}: \${err.message}\`);
+              }
+              
+              // Ensure denoJson is an object
+              if (typeof denoJson !== 'object' || denoJson === null) {
+                throw new Error(\`Expected \${filePath} to contain a JSON object\`);
+              }
+              
+              // Update version
+              denoJson.version = version;
+              
+              // Write back
+              await Deno.writeTextFile(filePath, JSON.stringify(denoJson, null, 2) + '\n');
+              
+              console.log(\`Successfully updated \${filePath} to version \${version}\`);
+            } catch (err) {
+              console.error('Error updating deno.json:', err.message);
+              Deno.exit(1);
+            }
           "
           echo "Updated deno.json to version $VERSION"
           cat deno.json
@@ -51,11 +93,53 @@ jobs:
       - name: Update package.json.template version
         run: |
           VERSION="${{ steps.version.outputs.version }}"
-          # Use jq to update the version field
+          if [ -z "$VERSION" ]; then
+            echo "Error: VERSION is empty"
+            exit 1
+          fi
+          # Use deno eval with error handling
           deno eval "
-            const pkgJson = JSON.parse(await Deno.readTextFile('package.json.template'));
-            pkgJson.version = '${VERSION}';
-            await Deno.writeTextFile('package.json.template', JSON.stringify(pkgJson, null, 2) + '\n');
+            try {
+              const filePath = 'package.json.template';
+              const version = '${VERSION}';
+              
+              // Validate inputs
+              if (!version || version.trim() === '') {
+                throw new Error('Version is empty or invalid');
+              }
+              
+              // Check if file exists
+              try {
+                await Deno.stat(filePath);
+              } catch (err) {
+                throw new Error(\`File not found: \${filePath}\`);
+              }
+              
+              // Read and parse JSON
+              const fileContent = await Deno.readTextFile(filePath);
+              let pkgJson;
+              try {
+                pkgJson = JSON.parse(fileContent);
+              } catch (err) {
+                throw new Error(\`Invalid JSON in \${filePath}: \${err.message}\`);
+              }
+              
+              // Ensure pkgJson is an object
+              if (typeof pkgJson !== 'object' || pkgJson === null) {
+                throw new Error(\`Expected \${filePath} to contain a JSON object\`);
+              }
+              
+              // Update version
+              pkgJson.version = version;
+              
+              // Write back
+              await Deno.writeTextFile(filePath, JSON.stringify(pkgJson, null, 2) + '\n');
+              
+              console.log(\`Successfully updated \${filePath} to version \${version}\`);
+            } catch (err) {
+              console.error('Error updating package.json.template:', err.message);
+              Deno.exit(1);
+            }
           "
           echo "Updated package.json.template to version $VERSION"
           cat package.json.template
