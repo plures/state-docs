@@ -95,7 +95,7 @@ Once a fix is available:
 
 ```bash
 # Use npx to avoid global installation
-npx statedoc gen --config=.stateDoc.json
+npx @plures/statedoc gen --config=.stateDoc.json
 
 # Or use Deno with explicit permissions
 deno run --allow-read=. --allow-write=./docs cli.ts gen

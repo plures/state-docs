@@ -63,7 +63,7 @@ if (Test-Command "npm") {
     Write-Info "Installing state-docs via npm..."
     
     try {
-        & npm install -g statedoc
+        & npm install -g @plures/statedoc
         Write-Success "Successfully installed state-docs via npm!"
         Write-Host ""
         Write-Info "You can now run: statedoc gen --config=.stateDoc.json"
@@ -77,7 +77,7 @@ if (Test-Command "npm") {
 if (Test-Command "npx") {
     Write-Success "Found npx! You can use state-docs without installation:"
     Write-Host ""
-    Write-Info "Run: npx statedoc gen --config=.stateDoc.json"
+    Write-Info "Run: npx @plures/statedoc gen --config=.stateDoc.json"
     Write-Host ""
     Write-Warning "Note: This will download and run the latest version each time."
     exit 0

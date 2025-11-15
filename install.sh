@@ -73,7 +73,7 @@ if command_exists npm; then
     echo ""
     info "Installing state-docs via npm..."
     
-    if npm install -g statedoc; then
+    if npm install -g @plures/statedoc; then
         success "Successfully installed state-docs via npm!"
         echo ""
         info "You can now run: statedoc gen --config=.stateDoc.json"
@@ -87,7 +87,7 @@ fi
 if command_exists npx; then
     success "Found npx! You can use state-docs without installation:"
     echo ""
-    info "Run: npx statedoc gen --config=.stateDoc.json"
+    info "Run: npx @plures/statedoc gen --config=.stateDoc.json"
     echo ""
     warning "Note: This will download and run the latest version each time."
     exit 0

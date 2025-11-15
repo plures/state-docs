@@ -32,7 +32,7 @@ deno run -A ../../cli.ts gen --config=.stateDoc.json
 
 ```bash
 cd examples/shopping-cart
-npx statedoc gen --config=.stateDoc.json
+npx @plures/statedoc gen --config=.stateDoc.json
 ```
 
 ### Expected Output

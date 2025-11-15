@@ -47,12 +47,12 @@ deno install -A -n statedoc jsr:@plures/statedoc/cli
 
 #### Via npm
 ```sh
-npm install -g statedoc
+npm install -g @plures/statedoc
 ```
 
 #### Via npx (No Installation Required)
 ```sh
-npx statedoc gen --config=.stateDoc.json
+npx @plures/statedoc gen --config=.stateDoc.json
 ```
 
 ## Quick Start
@@ -321,7 +321,7 @@ The project includes an automated publishing pipeline that triggers when a new v
    - Update version numbers in `deno.json` and `package.json.template`
    - Build the npm package using dnt
    - Publish to JSR (Deno registry) at `@plures/statedoc`
-   - Publish to npm as `statedoc`
+   - Publish to npm as `@plures/statedoc`
    - Create a GitHub release with the tag
 
 ### For End Users: Installation methods
@@ -329,8 +329,8 @@ The project includes an automated publishing pipeline that triggers when a new v
 After publishing, users can install via:
 - **Shell script**: `curl -fsSL https://raw.githubusercontent.com/plures/state-docs/main/install.sh | sh`
 - **Deno/JSR**: `deno install -A -n statedoc jsr:@plures/statedoc/cli`
-- **npm global**: `npm install -g statedoc`
-- **npx**: `npx statedoc gen`
+- **npm global**: `npm install -g @plures/statedoc`
+- **npx**: `npx @plures/statedoc gen`
 
 ### Required repository secrets:
 
