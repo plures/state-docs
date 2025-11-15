@@ -70,8 +70,13 @@ jobs:
         with:
           node-version: '20'
       
+      - name: Clean Deno cache
+        run: deno cache --reload mod.ts cli.ts
+      
       - name: Build npm package
         run: deno task build:npm
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
       
       - name: Verify npm package structure
         run: |
