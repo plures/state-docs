@@ -1,10 +1,9 @@
 
 import { build, emptyDir } from "@deno/dnt";
 
-// Note: Using @deno/dnt@^0.41.3 instead of 0.42.3 due to WASM panic issue
-// in dnt's Reflect.get (wasm/src/lib.rs line 56). Version 0.42.3 attempts
-// to use Reflect.get on a non-object value, causing a panic. Revert to 0.41.3
-// until the issue is fixed upstream.
+// Updated to @deno/dnt@^0.42.3 to fix @types/node version resolution issue.
+// Previous version 0.41.3 attempted to use @types/node@24.2.0 which doesn't
+// exist in the npm registry, causing build failures.
 
 await emptyDir("./npm");
 
@@ -20,6 +19,12 @@ try {
     compilerOptions: { lib: ["ES2022", "DOM"] },
     typeCheck: false, // Skip type checking to avoid shim limitations
     test: false, // Skip tests to avoid test runner issues
+    packageManager: "npm",
+    skipNpmInstall: false, // We need npm install to verify dependencies work
+    scriptModule: false,
+    postBuild() {
+      // No additional post-build steps needed
+    },
   });
   console.log("Built to npm/");
 } catch (error) {
