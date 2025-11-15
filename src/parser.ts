@@ -86,14 +86,15 @@ async function extractMachinesFromFile(filePath: string, _adapters: Adapters): P
     // Convert to absolute file:// URL
     let importPath = filePath;
     if (!importPath.startsWith('file://') && !importPath.startsWith('http://') && !importPath.startsWith('https://')) {
-      // Check if Deno is available
+      // Check if Deno is available using safer pattern to avoid WASM transformation issues
       const isDeno = typeof globalThis !== "undefined" && "Deno" in globalThis;
       
       // Make it absolute if it's not already
       if (!importPath.startsWith('/')) {
         if (isDeno) {
-          // Safe to access Deno directly after checking isDeno
-          importPath = `${Deno.cwd()}/${importPath}`;
+          // Access Deno dynamically to avoid WASM transformer issues with direct global access
+          const DenoNS = (globalThis as any).Deno;
+          importPath = `${DenoNS.cwd()}/${importPath}`;
         } else {
           const process = await import("node:process");
           importPath = `${process.cwd()}/${importPath}`;

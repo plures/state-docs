@@ -46,12 +46,13 @@ export async function loadAdapters(): Promise<Adapters> {
 
     const mermaid: MermaidRenderer = { toPng(_mmd) { return Promise.resolve(null); } };
 
+    const DenoNS = (globalThis as any).Deno;
     const fs: FSLike = {
-      readFile: p => Deno.readTextFile(p),
-      writeFile: (p, d) => Deno.writeTextFile(p, d),
-      writeBinaryFile: (p, d) => Deno.writeFile(p, d),
+      readFile: p => DenoNS.readTextFile(p),
+      writeFile: (p, d) => DenoNS.writeTextFile(p, d),
+      writeBinaryFile: (p, d) => DenoNS.writeFile(p, d),
       mkdirp: p => ensureDir(p),
-      exists: p => Deno.stat(p).then(()=>true).catch(()=>false),
+      exists: p => DenoNS.stat(p).then(()=>true).catch(()=>false),
     };
 
     return {

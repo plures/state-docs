@@ -15,7 +15,8 @@ const isDeno = typeof globalThis !== "undefined" && "Deno" in globalThis;
 
 async function exitWithCode(code: number): Promise<never> {
   if (isDeno) {
-    Deno.exit(code);
+    const DenoNS = (globalThis as any).Deno;
+    DenoNS.exit(code);
   } else {
     const mod = await import("node:process");
     mod.default.exit(code);
@@ -26,7 +27,10 @@ async function exitWithCode(code: number): Promise<never> {
 
 async function readText(p: string): Promise<string> {
   try {
-    if (isDeno) return await Deno.readTextFile(p);
+    if (isDeno) {
+      const DenoNS = (globalThis as any).Deno;
+      return await DenoNS.readTextFile(p);
+    }
     const fs = await import("node:fs/promises");
     return await fs.readFile(p, "utf8");
   } catch (_e) {
@@ -38,7 +42,8 @@ async function readText(p: string): Promise<string> {
 
 async function writeText(p: string, content: string) {
   if (isDeno) {
-    await Deno.writeTextFile(p, content);
+    const DenoNS = (globalThis as any).Deno;
+    await DenoNS.writeTextFile(p, content);
   } else {
     const fs = await import("node:fs/promises");
     await fs.writeFile(p, content, "utf8");
@@ -48,7 +53,8 @@ async function writeText(p: string, content: string) {
 async function fileExists(p: string): Promise<boolean> {
   try {
     if (isDeno) {
-      await Deno.stat(p);
+      const DenoNS = (globalThis as any).Deno;
+      await DenoNS.stat(p);
       return true;
     } else {
       const fs = await import("node:fs/promises");
@@ -90,7 +96,7 @@ async function initConfig(path: string) {
 
 // Main function to avoid top-level await which is incompatible with CommonJS
 async function main() {
-  const argv = isDeno ? Deno.args : (await import("node:process")).argv.slice(2);
+  const argv = isDeno ? (globalThis as any).Deno.args : (await import("node:process")).argv.slice(2);
   const { cmd, configPath } = parseArgs(argv);
 
   if (cmd === "init") {
@@ -121,7 +127,8 @@ async function main() {
 main().catch((e) => {
   console.error("Fatal error:", e);
   if (isDeno) {
-    Deno.exit(1);
+    const DenoNS = (globalThis as any).Deno;
+    DenoNS.exit(1);
   } else {
     import("node:process").then(mod => mod.default.exit(1));
   }
