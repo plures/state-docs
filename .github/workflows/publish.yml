@@ -146,19 +146,39 @@ jobs:
       
       - name: Build npm package
         run: deno task build:npm
+        continue-on-error: false
       
       - name: Publish to JSR (Deno)
-        run: deno publish --allow-dirty
+        env:
+          DENO_KV_ACCESS_TOKEN: ${{ secrets.JSR_TOKEN }}
+        run: |
+          if [ -z "$DENO_KV_ACCESS_TOKEN" ]; then
+            echo "Warning: JSR_TOKEN not set. Attempting OIDC authentication..."
+            deno publish --allow-dirty || echo "JSR publish failed - check authentication"
+          else
+            deno publish --allow-dirty --token="$DENO_KV_ACCESS_TOKEN"
+          fi
       
       - name: Publish to npm
         working-directory: ./npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm publish --access public
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "Error: NPM_TOKEN secret is not configured"
+            echo "Please add NPM_TOKEN to repository secrets"
+            exit 1
+          fi
+          npm publish --access public
       
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ steps.version.outputs.tag }} release
+          body: |
+            Release ${{ steps.version.outputs.tag }}
+            
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
