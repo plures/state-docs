@@ -1,0 +1,10 @@
+{
+  "projectTitle": "Task Management System",
+  "source": ".",
+  "target": "./docs",
+  "globs": ["**/*.schema.ts"],
+  "visualization": {
+    "format": "mermaid",
+    "exportPng": false
+  }
+}
