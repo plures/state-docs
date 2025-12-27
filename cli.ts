@@ -77,7 +77,7 @@ async function initConfig(path: string) {
     projectTitle: "My Project",
     source: "./src",
     target: "./docs",
-    globs: ["**/*.ts", "**/*.js"],
+    globs: ["**/*.schema.ts", "**/*.schema.js"],
     visualization: {
       format: "mermaid",
       exportPng: false
@@ -88,10 +88,10 @@ async function initConfig(path: string) {
   console.log(`✓ Created config file: ${path}`);
   console.log("\nEdit the config file to customize:");
   console.log("  - projectTitle: Your project name");
-  console.log("  - source: Directory containing your FSM files");
+  console.log("  - source: Directory containing your Praxis schema files");
   console.log("  - target: Output directory for documentation");
-  console.log("  - globs: File patterns to match");
-  console.log("\nRun 'statedoc gen' to generate documentation.");
+  console.log("  - globs: File patterns to match (e.g., **/*.schema.ts)");
+  console.log("\nRun 'praxisdoc gen' to generate documentation.");
 }
 
 // Main function to avoid top-level await which is incompatible with CommonJS

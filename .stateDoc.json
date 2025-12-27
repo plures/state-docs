@@ -1,15 +1,15 @@
 
 {
-  "$schema": "https://example.com/stateDoc.schema.json",
-  "projectTitle": "My FSM Docs",
+  "$schema": "https://example.com/praxisDoc.schema.json",
+  "projectTitle": "Praxis Application Documentation",
   "source": "src/fsm",
   "target": "docs/businessLogic",
-  "alwaysDisplayVisualizationAfterMachine": false,
-  "globs": ["**/*.machine.ts", "**/*.ts"],
-  "outline": "# [{{projectTitle}}]\n{{#each machines}}\n## {{name}}\n{{desc}}\n{{/each}}",
+  "alwaysDisplayVisualizationAfterLogic": false,
+  "globs": ["**/*.schema.ts", "**/*.schema.js", "**/*.machine.ts", "**/*.ts"],
+  "outline": "# [{{projectTitle}}]\n{{#each schemas}}\n## {{name}}\n{{desc}}\n{{/each}}",
   "templates": {
-    "machineIndex": "## {{name}}\n{{desc}}\n\nStates:\n{{#each states}}- [{{name}}](./states/{{slug}}.md) — {{desc}}\n{{/each}}\n",
-    "statePage": "# {{machine.name}} / {{name}}\n{{desc}}\n\nTransitions:\n{{#each on}}- {{event}} → {{target}}\n{{/each}}\n"
+    "schemaIndex": "# {{name}}\n\n{{desc}}\n\n## Models\n{{#each models}}\n### {{name}}\n{{desc}}\n{{/each}}\n\n## Logic\n{{#each logic}}- [{{name}}](./logic/{{slug}}.md)\n{{/each}}\n",
+    "logicPage": "# {{schema.name}} / {{name}}\n{{desc}}\n\n## Events\n{{#each events}}- {{tag}}\n{{/each}}\n"
   },
   "visualization": { "format": "mermaid", "exportPng": true }
 }

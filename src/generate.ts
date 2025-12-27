@@ -1,55 +1,62 @@
 
 import type { Adapters } from "../runtime.ts";
-import type { StateDocConfig } from "../mod.ts";
+import type { PraxisDocConfig } from "../mod.ts";
 import { renderTemplate } from "./tpl.ts";
-import { parseMachines } from "./parser.ts";
+import { parseSchemas } from "./parser.ts";
 
-export async function generateDocs(cfg: StateDocConfig, adapters: Adapters) {
-  const machines = await parseMachines(cfg, adapters);
+export async function generateDocs(cfg: PraxisDocConfig, adapters: Adapters) {
+  const schemas = await parseSchemas(cfg, adapters);
 
   // Ensure target dirs
   await adapters.fs.mkdirp(cfg.target);
-  await adapters.fs.mkdirp(adapters.join(cfg.target, "machines"));
+  await adapters.fs.mkdirp(adapters.join(cfg.target, "schemas"));
 
-  // Index
-  const outline = cfg.outline ?? "# {{projectTitle}}\n{{#each machines}}\n## {{name}}\n{{desc}}\n{{/each}}";
-  const indexMd = renderTemplate(outline, { projectTitle: cfg.projectTitle ?? "FSM Docs", machines });
+  // Index - list all schemas
+  const outline = cfg.outline ?? "# {{projectTitle}}\n{{#each schemas}}\n## {{name}}\n{{desc}}\n\n### Logic Definitions\n{{#each logic}}- [{{name}}](./schemas/{{../slug}}/logic/{{slug}}.md) — {{desc}}\n{{/each}}\n{{/each}}";
+  const indexMd = renderTemplate(outline, { projectTitle: cfg.projectTitle ?? "Praxis Application Documentation", schemas });
   await adapters.fs.writeFile(adapters.join(cfg.target, "index.md"), indexMd);
 
-  // Per-machine docs
-  const machineTpl = cfg.templates?.machineIndex ?? "## {{name}}\n{{desc}}\n\nStates:\n{{#each states}}- [{{name}}](./states/{{slug}}.md) — {{desc}}\n{{/each}}\n";
-  const stateTpl = cfg.templates?.statePage ?? "# {{machine.name}} / {{name}}\n{{desc}}\n\nTransitions:\n{{#each on}}- {{event}} → {{target}}\n{{/each}}\n";
+  // Per-schema docs
+  const schemaTpl = cfg.templates?.schemaIndex ?? "# {{name}}\n\n{{desc}}\n\n## Models\n{{#each models}}\n### {{name}}\n{{desc}}\n\nFields:\n{{#each fields}}- **{{name}}** ({{type}}){{#if description}} — {{description}}{{/if}}\n{{/each}}\n{{/each}}\n\n## Logic Definitions\n{{#each logic}}- [{{name}}](./logic/{{slug}}.md) — {{desc}}\n{{/each}}\n";
+  const logicTpl = cfg.templates?.logicPage ?? "# {{schema.name}} / {{name}}\n\n{{desc}}\n\n## Events\n{{#each events}}- **{{tag}}**{{#if description}} — {{description}}{{/if}}\n{{/each}}\n\n{{#if states}}## States\n{{#each states}}\n### {{name}}\n{{desc}}\n\nTransitions:\n{{#each on}}- {{event}} → {{target}}{{#if description}} — {{description}}{{/if}}\n{{/each}}\n{{/each}}\n{{/if}}\n{{#if facts}}## Facts\n{{#each facts}}- **{{tag}}**{{#if description}} — {{description}}{{/if}}\n{{/each}}\n{{/if}}\n{{#if transitions}}## State Transitions\n{{#each transitions}}- {{from}} --[{{event}}]--> {{to}}{{#if description}} — {{description}}{{/if}}\n{{/each}}\n{{/if}}\n";
 
-  for (const m of machines) {
-    const mdir = adapters.join(cfg.target, "machines", m.slug);
-    const sdir = adapters.join(mdir, "states");
-    await adapters.fs.mkdirp(sdir);
+  for (const schema of schemas) {
+    const sdir = adapters.join(cfg.target, "schemas", schema.slug);
+    const ldir = adapters.join(sdir, "logic");
+    await adapters.fs.mkdirp(ldir);
 
-    const mReadme = renderTemplate(machineTpl, m);
-    await adapters.fs.writeFile(adapters.join(mdir, "README.md"), mReadme);
+    const sReadme = renderTemplate(schemaTpl, schema);
+    await adapters.fs.writeFile(adapters.join(sdir, "README.md"), sReadme);
 
-    for (const s of m.states) {
-      const page = renderTemplate(stateTpl, { ...s, machine: m });
-      await adapters.fs.writeFile(adapters.join(sdir, `${s.slug}.md`), page);
-    }
-
-    // Mermaid diagram (text only for now)
-    const lines = [
-      "stateDiagram-v2",
-      `  [*] --> ${m.states[0]?.slug ?? "idle"}`,
-      ...m.states.flatMap((st: { slug: string; on: { event: string; target: string }[] }) =>
-        st.on.map((tr: { event: string; target: string }) => `  ${st.slug} --> ${tr.target}: ${tr.event}`)
-      )
-    ];
-    const mermaidText = lines.join("\n");
-    await adapters.fs.writeFile(adapters.join(mdir, "diagram.mmd"), mermaidText);
-    
-    // Export PNG if configured (feature not yet implemented, will be null)
-    if (cfg.visualization?.exportPng) {
-      const pngData = await adapters.mermaid.toPng(mermaidText);
-      if (pngData) {
-        await adapters.fs.writeBinaryFile(adapters.join(mdir, "diagram.png"), pngData);
+    // Generate documentation for each logic definition
+    for (const logic of schema.logic) {
+      const page = renderTemplate(logicTpl, { ...logic, schema });
+      await adapters.fs.writeFile(adapters.join(ldir, `${logic.slug}.md`), page);
+      
+      // Generate Mermaid diagram if states are present
+      if (logic.states && logic.states.length > 0) {
+        const lines = [
+          "stateDiagram-v2",
+          `  [*] --> ${logic.states[0]?.slug ?? "start"}`,
+          ...logic.states.flatMap(st =>
+            st.on.map(tr => `  ${st.slug} --> ${slugify(tr.target)}: ${tr.event}`)
+          )
+        ];
+        const mermaidText = lines.join("\n");
+        await adapters.fs.writeFile(adapters.join(ldir, `${logic.slug}.mmd`), mermaidText);
+        
+        // Export PNG if configured
+        if (cfg.visualization?.exportPng) {
+          const pngData = await adapters.mermaid.toPng(mermaidText);
+          if (pngData) {
+            await adapters.fs.writeBinaryFile(adapters.join(ldir, `${logic.slug}.png`), pngData);
+          }
+        }
       }
     }
   }
+}
+
+function slugify(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }

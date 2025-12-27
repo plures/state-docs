@@ -2,18 +2,18 @@
 import { loadAdapters } from "./runtime.ts";
 import { generateDocs } from "./src/generate.ts";
 
-export type StateDocConfig = {
+export type PraxisDocConfig = {
   projectTitle?: string;
   source: string;
   target: string;
   outline?: string;
-  alwaysDisplayVisualizationAfterMachine?: boolean;
+  alwaysDisplayVisualizationAfterLogic?: boolean;
   globs?: string[];
   templates?: Record<string, string>;
   visualization?: { format?: "mermaid"; exportPng?: boolean };
 };
 
-export async function runOnce(cfg: StateDocConfig): Promise<void> {
+export async function runOnce(cfg: PraxisDocConfig): Promise<void> {
   const adapters = await loadAdapters();
   return generateDocs(cfg, adapters);
 }
