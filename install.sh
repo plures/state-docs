@@ -1,6 +1,6 @@
 #!/bin/sh
-# State-Docs Installer Script
-# This script installs state-docs using the best available method
+# Praxis-Docs Installer Script
+# This script installs praxisdoc using the best available method
 
 set -e
 
@@ -44,7 +44,7 @@ detect_os() {
     esac
 }
 
-info "State-Docs Installer"
+info "Praxis-Docs Installer (v2.0)"
 echo ""
 
 OS=$(detect_os)
@@ -54,13 +54,14 @@ info "Detected OS: $OS"
 if command_exists deno; then
     info "Found Deno: $(deno --version | head -n1)"
     echo ""
-    info "Installing state-docs via Deno JSR..."
+    info "Installing praxisdoc via Deno JSR..."
     
     # Install from JSR
-    if deno install -A -f -n statedoc jsr:@plures/statedoc/cli; then
-        success "Successfully installed state-docs via Deno!"
+    if deno install -A -f -n praxisdoc jsr:@plures/statedoc/cli; then
+        success "Successfully installed praxisdoc via Deno!"
         echo ""
-        info "You can now run: statedoc gen --config=.stateDoc.json"
+        info "You can now run: praxisdoc gen --config=.praxisDoc.json"
+        info "Or use legacy command: statedoc gen --config=.stateDoc.json"
         exit 0
     else
         warning "Failed to install via Deno JSR, trying alternative methods..."
@@ -71,12 +72,13 @@ fi
 if command_exists npm; then
     info "Found npm: $(npm --version)"
     echo ""
-    info "Installing state-docs via npm..."
+    info "Installing praxisdoc via npm..."
     
     if npm install -g @plures/statedoc; then
-        success "Successfully installed state-docs via npm!"
+        success "Successfully installed praxisdoc via npm!"
         echo ""
-        info "You can now run: statedoc gen --config=.stateDoc.json"
+        info "You can now run: praxisdoc gen --config=.praxisDoc.json"
+        info "Or use legacy command: statedoc gen --config=.stateDoc.json"
         exit 0
     else
         warning "Failed to install via npm globally"
@@ -85,9 +87,9 @@ fi
 
 # Check for npx (can be used without global install)
 if command_exists npx; then
-    success "Found npx! You can use state-docs without installation:"
+    success "Found npx! You can use praxisdoc without installation:"
     echo ""
-    info "Run: npx @plures/statedoc gen --config=.stateDoc.json"
+    info "Run: npx @plures/statedoc gen --config=.praxisDoc.json"
     echo ""
     warning "Note: This will download and run the latest version each time."
     exit 0
