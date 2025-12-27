@@ -45,7 +45,7 @@ if (Test-Command "deno") {
     Write-Info "Installing praxisdoc via Deno JSR..."
     
     try {
-        & deno install -A -f -n praxisdoc jsr:@plures/statedoc/cli
+        & deno install -A -f -n praxisdoc jsr:@plures/praxisdoc/cli
         Write-Success "Successfully installed praxisdoc via Deno!"
         Write-Host ""
         Write-Info "You can now run: praxisdoc gen --config=.praxisDoc.json"
@@ -64,7 +64,7 @@ if (Test-Command "npm") {
     Write-Info "Installing praxisdoc via npm..."
     
     try {
-        & npm install -g @plures/statedoc
+        & npm install -g @plures/praxisdoc
         Write-Success "Successfully installed praxisdoc via npm!"
         Write-Host ""
         Write-Info "You can now run: praxisdoc gen --config=.praxisDoc.json"
@@ -79,7 +79,7 @@ if (Test-Command "npm") {
 if (Test-Command "npx") {
     Write-Success "Found npx! You can use praxisdoc without installation:"
     Write-Host ""
-    Write-Info "Run: npx @plures/statedoc gen --config=.praxisDoc.json"
+    Write-Info "Run: npx @plures/praxisdoc gen --config=.praxisDoc.json"
     Write-Host ""
     Write-Warning "Note: This will download and run the latest version each time."
     exit 0

@@ -3,6 +3,7 @@ import type { Adapters } from "../runtime.ts";
 import type { PraxisDocConfig } from "../mod.ts";
 import { renderTemplate } from "./tpl.ts";
 import { parseSchemas } from "./parser.ts";
+import { slugify } from "./utils.ts";
 
 export async function generateDocs(cfg: PraxisDocConfig, adapters: Adapters) {
   const schemas = await parseSchemas(cfg, adapters);
@@ -55,8 +56,4 @@ export async function generateDocs(cfg: PraxisDocConfig, adapters: Adapters) {
       }
     }
   }
-}
-
-function slugify(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }

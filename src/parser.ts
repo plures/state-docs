@@ -1,5 +1,6 @@
 import type { Adapters } from "../runtime.ts";
 import type { PraxisDocConfig } from "../mod.ts";
+import { slugify } from "./utils.ts";
 
 // Praxis Schema Types
 export type PraxisModel = {
@@ -13,8 +14,8 @@ export type PraxisLogic = {
   name: string;
   desc: string;
   slug: string;
-  events: Array<{ tag: string; payload?: Record<string, string>; description?: string }>;
-  facts?: Array<{ tag: string; payload?: Record<string, string>; description?: string }>;
+  events: Array<{ tag: string; payload?: Record<string, any>; description?: string }>;
+  facts?: Array<{ tag: string; payload?: Record<string, any>; description?: string }>;
   transitions?: Array<{ from: string; event: string; to: string; description?: string }>;
   states?: Array<{ name: string; desc: string; slug: string; on: Array<{ event: string; target: string; description?: string }> }>;
 };
@@ -28,10 +29,6 @@ export type PraxisSchema = {
   logic: PraxisLogic[];
   components?: Array<{ name: string; type: string; model?: string; description?: string }>;
 };
-
-function slugify(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
 
 /**
  * Parse a Praxis schema object extracted from source code

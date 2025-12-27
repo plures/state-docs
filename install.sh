@@ -57,7 +57,7 @@ if command_exists deno; then
     info "Installing praxisdoc via Deno JSR..."
     
     # Install from JSR
-    if deno install -A -f -n praxisdoc jsr:@plures/statedoc/cli; then
+    if deno install -A -f -n praxisdoc jsr:@plures/praxisdoc/cli; then
         success "Successfully installed praxisdoc via Deno!"
         echo ""
         info "You can now run: praxisdoc gen --config=.praxisDoc.json"
@@ -74,7 +74,7 @@ if command_exists npm; then
     echo ""
     info "Installing praxisdoc via npm..."
     
-    if npm install -g @plures/statedoc; then
+    if npm install -g @plures/praxisdoc; then
         success "Successfully installed praxisdoc via npm!"
         echo ""
         info "You can now run: praxisdoc gen --config=.praxisDoc.json"
@@ -89,7 +89,7 @@ fi
 if command_exists npx; then
     success "Found npx! You can use praxisdoc without installation:"
     echo ""
-    info "Run: npx @plures/statedoc gen --config=.praxisDoc.json"
+    info "Run: npx @plures/praxisdoc gen --config=.praxisDoc.json"
     echo ""
     warning "Note: This will download and run the latest version each time."
     exit 0
