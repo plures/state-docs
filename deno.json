@@ -1,7 +1,7 @@
 
 {
-  "name": "@plures/statedoc",
-  "version": "1.0.2",
+  "name": "@plures/praxisdoc",
+  "version": "2.0.0",
   "exports": {
     ".": "./mod.ts",
     "./cli": "./cli.ts"

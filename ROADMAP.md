@@ -1,19 +1,20 @@
 # Roadmap
 
-This document outlines the planned features and improvements for state-docs. We use semantic versioning and prioritize community feedback in our development process.
+This document outlines the planned features and improvements for praxisdoc. We use semantic versioning and prioritize community feedback in our development process.
 
-## Current Version: 1.0.0 (Initial Release)
+## Current Version: 2.0.0 (Praxis Refactor)
 
-**Status**: Alpha - Core functionality is stable, API may change before 1.0 stable release
+**Status**: Alpha - Major refactor from XState to Praxis. Core functionality is stable, API has changed.
 
 ### ✅ Completed Features
 
-- FSM documentation generation from XState-compatible state machines
+- Praxis schema documentation generation (models, logic, components)
+- Legacy XState machine support with automatic conversion
 - Dual runtime support (Deno and Node.js)
 - Markdown output with customizable templates
-- Mermaid diagram generation
+- Mermaid diagram generation from state transitions
 - CLI with `init` and `gen` commands
-- Configuration via `.stateDoc.json`
+- Configuration via `.praxisDoc.json` (or `.stateDoc.json` for backwards compatibility)
 - Automated publishing to JSR and npm
 - Cross-platform installation scripts
 
@@ -21,23 +22,24 @@ This document outlines the planned features and improvements for state-docs. We 
 
 ## Upcoming Releases
 
-### v1.1.0 - Parser Implementation (Q1 2025)
+### v2.1.0 - Enhanced Praxis Integration (Q1 2025)
 
-**Focus**: Replace placeholder parser with real TypeScript/XState parsing
+**Focus**: Deeper integration with Praxis framework features
 
-- [ ] Implement TypeScript compiler API integration
-- [ ] Extract XState machine definitions from source files
-- [ ] Support both `createMachine()` and object literal formats
-- [ ] Parse machine context, guards, and actions
-- [ ] Add validation for malformed state machines
-- [ ] Improve error messages with file locations
+- [ ] Support YAML schema definitions
+- [ ] Support JSON schema definitions
+- [ ] Parse Praxis facts and rules documentation
+- [ ] Generate component documentation from schema
+- [ ] Add support for Praxis constraints and validations
+- [ ] Integrate with Praxis CLI for seamless workflow
+- [ ] Add watch mode for continuous documentation generation
 
 **Good First Issues**:
-- Add unit tests for parser utilities
-- Improve error message formatting
-- Add support for JSDoc comments in state definitions
+- Add examples for YAML schemas
+- Improve template customization options
+- Add support for JSDoc comments in schema definitions
 
-### v1.2.0 - Enhanced Visualization (Q2 2025)
+### v2.2.0 - Enhanced Visualization (Q2 2025)
 
 **Focus**: Improve diagram generation and export options
 
@@ -47,40 +49,41 @@ This document outlines the planned features and improvements for state-docs. We 
 - [ ] Custom diagram themes and styling
 - [ ] Support for nested/hierarchical state visualization
 - [ ] Parallel states visualization
-- [ ] History states representation
+- [ ] Component relationship diagrams
+- [ ] Model entity-relationship diagrams
 
 **Good First Issues**:
 - Add color customization options
 - Create diagram theme presets
 - Document custom styling examples
 
-### v1.3.0 - Multiple Format Support (Q2 2025)
+### v2.3.0 - Multiple Format Support (Q2 2025)
 
-**Focus**: Support additional state machine formats and documentation outputs
+**Focus**: Support additional schema formats and documentation outputs
 
 - [ ] Support Robot Framework state machines
 - [ ] Support State Machine Cat format
-- [ ] Support JSON-based state definitions
-- [ ] HTML documentation output
+- [ ] HTML documentation output with navigation
 - [ ] PDF export via markdown conversion
 - [ ] OpenAPI integration for API state flows
+- [ ] Praxis-native documentation export
 
 **Good First Issues**:
 - Add examples for different input formats
 - Create format conversion utilities
 - Document format specifications
 
-### v1.4.0 - Advanced Features (Q3 2025)
+### v2.4.0 - Advanced Features (Q3 2025)
 
 **Focus**: Enhanced documentation and developer experience
 
-- [ ] Watch mode with hot reload
 - [ ] Integration with documentation sites (Docusaurus, VitePress, etc.)
-- [ ] Type definition generation from state machines
+- [ ] Type definition generation from Praxis schemas
 - [ ] Test scenario generation from state transitions
 - [ ] Code coverage visualization (which states/transitions are tested)
-- [ ] Diff view for state machine changes
-- [ ] Migration helpers for breaking state changes
+- [ ] Diff view for schema changes
+- [ ] Migration helpers for breaking schema changes
+- [ ] Real-time collaboration features
 
 **Good First Issues**:
 - Add more template examples
@@ -89,17 +92,17 @@ This document outlines the planned features and improvements for state-docs. We 
 
 ---
 
-## v2.0.0 - Major Features (Q4 2025)
+## v3.0.0 - Major Features (Q4 2025)
 
 **Focus**: Enterprise features and scalability
 
-- [ ] Multi-language support for state machine parsing (JavaScript, TypeScript, Python)
-- [ ] State machine validation and linting
+- [ ] Multi-language support for schema parsing (JavaScript, TypeScript, Python)
+- [ ] Schema validation and linting
 - [ ] Performance optimization for large codebases
 - [ ] Plugin system for custom parsers and generators
 - [ ] Cloud integration (GitHub, GitLab, Bitbucket)
-- [ ] Real-time collaboration features
 - [ ] Analytics and insights (state usage, transition frequency)
+- [ ] Praxis framework tight integration (import schemas directly)
 
 ---
 
@@ -108,27 +111,31 @@ This document outlines the planned features and improvements for state-docs. We 
 These ideas are under consideration but not yet scheduled:
 
 ### Developer Tools
-- VS Code extension for inline state visualization
-- State machine debugger integration
-- Real-time state machine testing playground
+- VS Code extension for inline schema visualization
+- Praxis schema debugger integration
+- Real-time schema testing playground
+- CodeCanvas integration for visual editing
 
 ### Documentation Features
-- Automatic changelog generation from state changes
+- Automatic changelog generation from schema changes
 - Multi-language documentation generation
-- Interactive state machine tutorials
+- Interactive schema tutorials
 - Version comparison and migration guides
+- Business process documentation
 
 ### Enterprise Features
 - Team collaboration features
-- State machine governance and approvals
+- Schema governance and approvals
 - Compliance and audit trail
 - Custom deployment pipelines
+- Multi-tenant documentation
 
 ### Integrations
-- Jira/Linear integration for linking states to tickets
-- Slack/Discord notifications for state changes
+- Jira/Linear integration for linking logic to tickets
+- Slack/Discord notifications for schema changes
 - CI/CD integrations (GitHub Actions, GitLab CI, CircleCI)
 - Monitoring integration (Datadog, New Relic)
+- PluresDB integration for runtime state tracking
 
 ---
 
@@ -175,32 +182,33 @@ Use our bug report template and include:
 
 We follow semantic versioning:
 
-- **Major (X.0.0)**: Breaking changes, API redesigns
-- **Minor (1.X.0)**: New features, backward-compatible
-- **Patch (1.0.X)**: Bug fixes, documentation updates
+- **Major (X.0.0)**: Breaking changes, API redesigns (e.g., v1→v2 Praxis refactor)
+- **Minor (2.X.0)**: New features, backward-compatible
+- **Patch (2.0.X)**: Bug fixes, documentation updates
 
 ### Release Schedule
 
 - **Patch releases**: As needed for bugs
 - **Minor releases**: Quarterly (every 3 months)
-- **Major releases**: Annually or as needed
+- **Major releases**: Annually or as needed for significant changes
 
 ### Stability Guarantees
 
-- **Alpha (current)**: API may change, no backward compatibility guarantee
-- **Beta (v1.5.0+)**: Feature complete, minor API changes possible
-- **Stable (v2.0.0+)**: Guaranteed backward compatibility within major version
+- **Alpha (v2.0.x-2.4.x)**: API may change, migration from v1.x supported
+- **Beta (v2.5.0+)**: Feature complete, minor API changes possible
+- **Stable (v3.0.0+)**: Guaranteed backward compatibility within major version
 
 ---
 
 ## Community Goals
 
-We're building state-docs as a community-driven project:
+We're building praxisdoc as a community-driven project:
 
-- 🎯 **Target**: 50+ stars by v1.1.0
-- 🤝 **Target**: 10+ external contributors by v1.2.0
-- 📝 **Target**: 5+ production users by v2.0.0
-- 🌍 **Target**: Multi-language documentation by v2.0.0
+- 🎯 **Target**: 100+ stars by v2.2.0
+- 🤝 **Target**: 20+ external contributors by v2.3.0
+- 📝 **Target**: 10+ production Praxis users by v3.0.0
+- 🌍 **Target**: Multi-language documentation by v3.0.0
+- 🔗 **Target**: Official Praxis framework integration by v3.0.0
 
 ---
 
@@ -213,7 +221,7 @@ We're building state-docs as a community-driven project:
 
 ---
 
-**Last Updated**: 2025-01-XX  
+**Last Updated**: 2025-12-27  
 **Next Review**: Q2 2025
 
 For questions about the roadmap, open a discussion or issue on GitHub.

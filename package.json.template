@@ -1,11 +1,11 @@
 
 {
-  "name": "@plures/statedoc",
-  "version": "1.0.2",
-  "description": "FSM documentation generator for Deno + Node",
+  "name": "@plures/praxisdoc",
+  "version": "2.0.0",
+  "description": "Praxis application documentation generator for Deno + Node",
   "license": "MIT",
   "type": "module",
-  "bin": { "statedoc": "./esm/cli.js" },
+  "bin": { "praxisdoc": "./esm/cli.js" },
   "exports": { ".": "./mod.js" },
   "engines": { "node": ">=18" },
   "dependencies": {
