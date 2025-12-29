@@ -1,6 +1,6 @@
 
 {
-  "name": "@plures/statedoc",
+  "name": "@plures/state-docs",
   "version": "1.0.2",
   "exports": {
     ".": "./mod.ts",
