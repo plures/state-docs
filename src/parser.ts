@@ -81,7 +81,7 @@ function parsePraxisSchema(schemaObj: any, varName: string): PraxisSchema {
       }));
       
       // Convert transitions to state representation for compatibility
-      const states: PraxisLogic['states'] = [];
+      const states: Array<{ name: string; desc: string; slug: string; on: Array<{ event: string; target: string; description?: string }> }> = [];
       if (transitions.length > 0) {
         const stateMap = new Map<string, { name: string; desc: string; slug: string; on: Array<{ event: string; target: string; description?: string }> }>();
         
@@ -202,7 +202,7 @@ function parseLegacyXStateMachine(machineObj: any, varName: string): PraxisSchem
   const slug = slugify(name);
   
   // Flatten all states (including nested ones)
-  const states: PraxisLogic['states'] = [];
+  const states: Array<{ name: string; desc: string; slug: string; on: Array<{ event: string; target: string; description?: string }> }> = [];
   const events = new Set<string>();
   
   function processStates(statesObj: any, prefix = '') {
