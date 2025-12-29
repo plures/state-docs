@@ -1,28 +1,28 @@
 
-# statedoc (Deno + Node)
+# praxisdoc (Deno + Node)
 
 [![CI](https://github.com/plures/state-docs/actions/workflows/ci.yml/badge.svg)](https://github.com/plures/state-docs/actions/workflows/ci.yml)
 [![JSR](https://jsr.io/badges/@plures/statedoc)](https://jsr.io/@plures/statedoc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**FSM documentation generator for XState projects.** One ESM codebase. Runs on Deno or Node. Generates Markdown and Mermaid from machines and states.
+**Automated documentation generator for Praxis applications.** One ESM codebase. Runs on Deno or Node. Generates Markdown and Mermaid diagrams from Praxis schemas.
 
-> **⚠️ Version Status**: Alpha (v1.0.0) - Core functionality is stable, but API may change. See [Stability & Versioning](#stability--versioning) below.
+> **⚠️ Version Status**: Alpha (v2.0.0) - Refactored for Praxis. API may change. See [Stability & Versioning](#stability--versioning) below.
 
-## What is state-docs?
+## What is praxisdoc?
 
-state-docs automatically generates human-readable documentation from your [finite state machine (FSM)](https://en.wikipedia.org/wiki/Finite-state_machine) definitions. It transforms complex state machine code into clear documentation that anyone can understand—perfect for product teams, QA engineers, and stakeholders.
+praxisdoc automatically generates human-readable documentation from your [Praxis](https://github.com/plures/praxis) application schemas. It transforms declarative schema definitions into clear documentation that anyone can understand—perfect for product teams, QA engineers, and stakeholders.
 
-### What "State" Means Here
+### About Praxis
 
-In state-docs, **"state"** refers to the **behavioral state** of your application's finite state machines (FSMs):
+**Praxis** is a schema-driven application framework for building local-first, distributed applications. It uses declarative schemas to define:
 
-- **Application State Machines**: User workflows (authentication, checkout, onboarding)
-- **Business Logic States**: Order processing, approval workflows, document lifecycles
-- **UI Component States**: Modal dialogs, form wizards, navigation flows
-- **System States**: Connection status, data sync states, error recovery flows
+- **Models**: Data structures with fields, types, and indexes
+- **Logic**: Business rules, events, facts, and state transitions
+- **Components**: UI elements auto-generated from schemas
+- **Documentation**: Automatically synchronized with your code
 
-We focus on **XState-compatible state machines** that define discrete states and transitions between them.
+praxisdoc leverages Praxis's schema format to generate comprehensive documentation including state diagrams, event flows, and data models.
 
 ## Installation
 
@@ -42,7 +42,7 @@ irm https://raw.githubusercontent.com/plures/state-docs/main/install.ps1 | iex
 
 #### Via Deno (JSR)
 ```sh
-deno install -A -n statedoc jsr:@plures/statedoc/cli
+deno install -A -n praxisdoc jsr:@plures/statedoc/cli
 ```
 
 #### Via npm
@@ -52,33 +52,33 @@ npm install -g @plures/statedoc
 
 #### Via npx (No Installation Required)
 ```sh
-npx @plures/statedoc gen --config=.stateDoc.json
+npx @plures/statedoc gen --config=.praxisDoc.json
 ```
 
 ## Quick Start
 
 After installation, generate documentation:
 ```sh
-statedoc gen --config=.stateDoc.json
+praxisdoc gen --config=.praxisDoc.json
 ```
 
-### Adding to an Existing Project
+### Adding to an Existing Praxis Project
 
-1. Install state-docs (choose one method from above)
+1. Install praxisdoc (choose one method from above)
 2. Initialize a configuration file:
 
 ```sh
-statedoc init
+praxisdoc init
 ```
 
-This creates a `.stateDoc.json` file with sensible defaults:
+This creates a `.praxisDoc.json` file (or `.stateDoc.json` for backwards compatibility) with sensible defaults:
 
 ```json
 {
   "projectTitle": "My Project",
   "source": "./src",
   "target": "./docs",
-  "globs": ["**/*.ts", "**/*.js"],
+  "globs": ["**/*.schema.ts", "**/*.schema.js"],
   "visualization": {
     "format": "mermaid",
     "exportPng": false
@@ -89,14 +89,14 @@ This creates a `.stateDoc.json` file with sensible defaults:
 3. Edit the config file to match your project structure
 4. Run the generator:
 ```sh
-statedoc gen
+praxisdoc gen
 ```
 
 5. (Optional) Add to your package.json scripts:
 ```json
 {
   "scripts": {
-    "docs": "statedoc gen"
+    "docs": "praxisdoc gen"
   }
 }
 ```
@@ -113,33 +113,34 @@ Node (after building with dnt):
 deno run -A scripts/build_npm.ts
 cd npm
 npm install -g .
-statedoc gen --config=.stateDoc.json
+praxisdoc gen --config=.praxisDoc.json
 ```
 
 ## Real-World Example
 
-See the [Shopping Cart Example](./examples/shopping-cart/README.md) for a comprehensive demonstration:
+See the [Task Management Example](./examples/task-management/README.md) for a comprehensive demonstration:
 
-- **Before**: Complex TypeScript state machine code
+- **Before**: Praxis schema definitions in TypeScript
 - **After**: Clear Markdown documentation with Mermaid diagrams
 - **Use Cases**: Product planning, QA testing, stakeholder communication
 - **CLI Output**: See exactly what the tool generates
 
-[View the complete example →](./examples/shopping-cart/README.md)
+[View the complete example →](./examples/task-management/README.md)
 
 ## Supported Formats
 
 ### Input Formats
 
 **Currently Supported:**
-- XState-compatible TypeScript state machines (`.ts`, `.tsx`)
-- XState-compatible JavaScript state machines (`.js`, `.jsx`)
+- Praxis schema files (`.schema.ts`, `.schema.js`)
+- Legacy XState-compatible state machines (`.machine.ts`, `.machine.js`) - converted to Praxis format
+- TypeScript and JavaScript (ES modules)
 
 **Planned (see [ROADMAP.md](./ROADMAP.md)):**
+- YAML schema definitions
 - JSON state definitions
 - Robot Framework state machines
 - State Machine Cat format
-- YAML state definitions
 
 ### Output Formats
 
@@ -157,92 +158,109 @@ See the [Shopping Cart Example](./examples/shopping-cart/README.md) for a compre
 
 - **Runtime**: Deno 2.x, Node.js 18+
 - **Input**: TypeScript, JavaScript (ES modules)
-- **State Libraries**: XState-compatible syntax
+- **Schema Libraries**: Praxis schemas, XState-compatible (legacy)
 - **Platforms**: Linux, macOS, Windows
 
-## Why state-docs?
+## Why praxisdoc?
 
 ### Comparison with Other Tools
 
-| Feature | state-docs | XState Inspector | Stately Studio | Custom Docs |
-|---------|-----------|------------------|----------------|-------------|
-| **Auto-generate from code** | ✅ | ❌ | ❌ | ❌ |
-| **Markdown output** | ✅ | ❌ | ❌ | ✅ (manual) |
-| **Mermaid diagrams** | ✅ | ❌ | ✅ | ❌ |
-| **No runtime required** | ✅ | ❌ (needs app) | ✅ | ✅ |
-| **CLI tool** | ✅ | ❌ | ❌ | ❌ |
-| **Free & open source** | ✅ | ✅ | 💰 (limited) | ✅ |
-| **Customizable templates** | ✅ | ❌ | 💰 (Pro) | ✅ |
-| **Version control friendly** | ✅ | ❌ | ❌ | ✅ |
-| **CI/CD integration** | ✅ | ❌ | ❌ | ✅ |
-| **Works offline** | ✅ | ❌ | ❌ | ✅ |
+| Feature | praxisdoc | Praxis Built-in | XState Inspector | Stately Studio | Custom Docs |
+|---------|-----------|-----------------|------------------|----------------|-------------|
+| **Auto-generate from code** | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Praxis schema support** | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Markdown output** | ✅ | ✅ | ❌ | ❌ | ✅ (manual) |
+| **Mermaid diagrams** | ✅ | ✅ | ❌ | ✅ | ❌ |
+| **No runtime required** | ✅ | ❌ | ❌ (needs app) | ✅ | ✅ |
+| **CLI tool** | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Free & open source** | ✅ | ✅ | ✅ | 💰 (limited) | ✅ |
+| **Customizable templates** | ✅ | ⚠️ | ❌ | 💰 (Pro) | ✅ |
+| **Version control friendly** | ✅ | ✅ | ❌ | ❌ | ✅ |
+| **CI/CD integration** | ✅ | ✅ | ❌ | ❌ | ✅ |
+| **Works offline** | ✅ | ✅ | ❌ | ❌ | ✅ |
+| **Legacy XState support** | ✅ | ❌ | ✅ | ✅ | ❌ |
 
 ### Unique Value Propositions
 
-1. **Static Documentation**: Generate docs at build time, no runtime dependencies
-2. **Git-Friendly**: Markdown output works with standard version control workflows
-3. **Template-Based**: Fully customizable output to match your documentation style
-4. **Dual Runtime**: Single codebase works on both Deno and Node.js
-5. **CLI-First**: Designed for automation, scripting, and CI/CD pipelines
-6. **Developer-Focused**: Built by developers, for developers, with extensibility in mind
+1. **Praxis-First Design**: Built specifically to document Praxis applications with full schema support
+2. **Static Documentation**: Generate docs at build time, no runtime dependencies
+3. **Git-Friendly**: Markdown output works with standard version control workflows
+4. **Template-Based**: Fully customizable output to match your documentation style
+5. **Dual Runtime**: Single codebase works on both Deno and Node.js
+6. **CLI-First**: Designed for automation, scripting, and CI/CD pipelines
+7. **Legacy Support**: Converts XState machines to Praxis format automatically
+8. **Developer-Focused**: Built by developers, for developers, with extensibility in mind
 
-### When to Use state-docs
+### When to Use praxisdoc
 
-✅ **Use state-docs when:**
+✅ **Use praxisdoc when:**
+- You're building a Praxis application
 - You want documentation that lives in your repository
 - You need to generate docs automatically in CI/CD
 - You want to customize documentation templates
-- You're using XState or XState-compatible state machines
+- You're migrating from XState to Praxis
 - You need offline, static documentation
 
 ❌ **Consider alternatives when:**
-- You need real-time state visualization during development (→ use XState Inspector)
+- You need real-time state visualization during development (→ use Praxis built-in tools)
 - You prefer visual state machine editors (→ use Stately Studio)
 - You need collaborative, cloud-based diagramming (→ use Stately Studio)
-- You're not using state machines at all
+- You're not using Praxis or state machines at all
 
 ## Scope & Limitations
 
-### What state-docs Does
+### What praxisdoc Does
 
-- ✅ Parses XState-compatible state machine definitions
-- ✅ Generates Markdown documentation from state machines
-- ✅ Creates Mermaid state diagrams
+- ✅ Parses Praxis schema definitions (models, logic, components)
+- ✅ Generates Markdown documentation from schemas
+- ✅ Creates Mermaid state diagrams from logic transitions
 - ✅ Supports customizable templates
 - ✅ Works with TypeScript and JavaScript
+- ✅ Converts legacy XState machines to Praxis format
 
-### What state-docs Doesn't Do
+### What praxisdoc Doesn't Do
 
 - ❌ **Runtime visualization**: We generate static docs, not interactive UIs
-- ❌ **State machine validation**: We document existing machines, don't validate logic
+- ❌ **Schema validation**: We document existing schemas, don't validate logic
 - ❌ **Execution**: We don't run or test your state machines
-- ❌ **Visual editor**: We're a CLI tool, not a GUI for creating machines
+- ❌ **Visual editor**: We're a CLI tool, not a GUI for creating schemas
 - ❌ **Multiple languages**: Currently only TypeScript/JavaScript (see roadmap)
 
-### Known Limitations (v1.0.0)
+### Known Limitations (v2.0.0)
 
-- Parser is placeholder-based; full TypeScript parsing coming in v1.1.0
+- Parser is runtime-based; static TypeScript AST parsing coming in future
 - No PNG/SVG export yet; only Mermaid text format
 - No watch mode; must manually re-run generator
-- Limited to XState syntax; other formats planned
+- Limited to Praxis and XState formats; other formats planned
 
 See our [ROADMAP.md](./ROADMAP.md) for planned improvements.
 
 ## Stability & Versioning
 
-### Current Stability: Alpha (v1.0.0)
+### Current Stability: Alpha (v2.0.0)
 
 **What this means:**
-- ⚠️ **API may change**: Configuration options and output formats may evolve
+- ⚠️ **Major refactor**: Migrated from XState to Praxis
+- ⚠️ **API has changed**: Configuration and output formats updated
 - ✅ **Core functionality works**: Basic documentation generation is stable
 - ⚠️ **Breaking changes possible**: Updates may require configuration changes
+- ✅ **Legacy support**: XState machines automatically converted to Praxis format
 - ⚠️ **Use with caution in production**: Suitable for early adopters and testing
+
+### Migration from v1.x
+
+If you're upgrading from state-docs v1.x (XState-based):
+
+1. **Config file**: Rename `.stateDoc.json` to `.praxisDoc.json` (optional but recommended)
+2. **Update globs**: Add `**/*.schema.ts` to your globs pattern
+3. **Legacy support**: Existing `.machine.ts` files will still work
+4. **Review output**: Documentation structure has changed to support Praxis schemas
 
 ### Stability Roadmap
 
-- **v1.0.x - v1.4.x (Alpha)**: Rapid iteration, API refinements, feature additions
-- **v1.5.x+ (Beta)**: Feature complete, stable API, minor changes only
-- **v2.0.0+ (Stable)**: Production-ready, backward compatibility guaranteed
+- **v2.0.x - v2.4.x (Alpha)**: Rapid iteration, API refinements, feature additions
+- **v2.5.x+ (Beta)**: Feature complete, stable API, minor changes only
+- **v3.0.0+ (Stable)**: Production-ready, backward compatibility guaranteed
 
 ### Versioning Policy
 
@@ -328,7 +346,7 @@ The project includes an automated publishing pipeline that triggers when a new v
 
 After publishing, users can install via:
 - **Shell script**: `curl -fsSL https://raw.githubusercontent.com/plures/state-docs/main/install.sh | sh`
-- **Deno/JSR**: `deno install -A -n statedoc jsr:@plures/statedoc/cli`
+- **Deno/JSR**: `deno install -A -n praxisdoc jsr:@plures/statedoc/cli`
 - **npm global**: `npm install -g @plures/statedoc`
 - **npx**: `npx @plures/statedoc gen`
 

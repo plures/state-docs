@@ -1,7 +1,7 @@
 
 {
   "name": "@plures/state-docs",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "exports": {
     ".": "./mod.ts",
     "./cli": "./cli.ts"

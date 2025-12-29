@@ -1,6 +1,6 @@
-# Contributing to state-docs
+# Contributing to praxisdoc
 
-Thank you for your interest in contributing to state-docs! This document provides guidelines and information to help you contribute effectively.
+Thank you for your interest in contributing to praxisdoc! This document provides guidelines and information to help you contribute effectively.
 
 ## Quick Links
 
@@ -29,7 +29,7 @@ Thank you for your interest in contributing to state-docs! This document provide
 - ✨ **Features** - Add new functionality (check roadmap first)
 - 📝 **Documentation** - Improve README, guides, or code comments
 - 🧪 **Tests** - Add test coverage for existing features
-- 🎨 **Examples** - Create new example state machines
+- 🎨 **Examples** - Create new Praxis schema examples
 - 🌍 **Translations** - Help us reach more developers
 - 🗣️ **Community** - Answer questions, review PRs, share the project
 
@@ -43,11 +43,12 @@ We label issues with **`good first issue`** to help new contributors get started
 - ✅ Are self-contained and focused
 
 **Current Good First Issue areas:**
-- Adding more examples (e.g., authentication flow, modal state machine)
-- Improving error messages
+- Adding more Praxis schema examples (e.g., e-commerce order, user authentication)
+- Improving error messages for schema parsing
 - Adding JSDoc comments to functions
 - Writing integration tests
 - Improving CLI help text
+- Supporting YAML schema parsing
 - Adding configuration validation
 
 [View all Good First Issues →](https://github.com/plures/state-docs/labels/good%20first%20issue)
@@ -146,6 +147,25 @@ See [docs/adr/README.md](docs/adr/README.md) for more details on our ADR process
 ### Testing
 
 Currently, the project uses end-to-end testing by running the documentation generator:
+
+```sh
+# Test with the example configuration
+deno task gen
+
+# Test with the task management example
+cd examples/task-management
+deno run -A ../../cli.ts gen --config=.praxisDoc.json
+
+# Test with the shopping cart example (legacy XState)
+cd examples/shopping-cart
+deno run -A ../../cli.ts gen --config=.stateDoc.json
+```
+
+When adding new features:
+- Test with both Praxis schemas and legacy XState machines
+- Verify documentation output is correct
+- Test with custom templates
+- Test edge cases (empty schemas, malformed input, etc.)
 
 ```sh
 deno task gen

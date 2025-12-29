@@ -1,5 +1,5 @@
-# State-Docs Installer Script for Windows
-# This script installs state-docs using the best available method
+# Praxis-Docs Installer Script for Windows
+# This script installs praxisdoc using the best available method
 
 $ErrorActionPreference = "Stop"
 
@@ -34,7 +34,7 @@ function Test-Command {
     return $?
 }
 
-Write-Info "State-Docs Installer"
+Write-Info "Praxis-Docs Installer (v2.0)"
 Write-Host ""
 
 # Check for Deno
@@ -42,13 +42,14 @@ if (Test-Command "deno") {
     $denoVersion = & deno --version 2>&1 | Select-Object -First 1
     Write-Info "Found Deno: $denoVersion"
     Write-Host ""
-    Write-Info "Installing state-docs via Deno JSR..."
+    Write-Info "Installing praxisdoc via Deno JSR..."
     
     try {
-        & deno install -A -f -n statedoc jsr:@plures/statedoc/cli
-        Write-Success "Successfully installed state-docs via Deno!"
+        & deno install -A -f -n praxisdoc jsr:@plures/praxisdoc/cli
+        Write-Success "Successfully installed praxisdoc via Deno!"
         Write-Host ""
-        Write-Info "You can now run: statedoc gen --config=.stateDoc.json"
+        Write-Info "You can now run: praxisdoc gen --config=.praxisDoc.json"
+        Write-Info "Or use legacy command: statedoc gen --config=.stateDoc.json"
         exit 0
     } catch {
         Write-Warning "Failed to install via Deno JSR, trying alternative methods..."
@@ -60,13 +61,14 @@ if (Test-Command "npm") {
     $npmVersion = & npm --version 2>&1
     Write-Info "Found npm: $npmVersion"
     Write-Host ""
-    Write-Info "Installing state-docs via npm..."
+    Write-Info "Installing praxisdoc via npm..."
     
     try {
-        & npm install -g @plures/statedoc
-        Write-Success "Successfully installed state-docs via npm!"
+        & npm install -g @plures/praxisdoc
+        Write-Success "Successfully installed praxisdoc via npm!"
         Write-Host ""
-        Write-Info "You can now run: statedoc gen --config=.stateDoc.json"
+        Write-Info "You can now run: praxisdoc gen --config=.praxisDoc.json"
+        Write-Info "Or use legacy command: statedoc gen --config=.stateDoc.json"
         exit 0
     } catch {
         Write-Warning "Failed to install via npm globally"
@@ -75,9 +77,9 @@ if (Test-Command "npm") {
 
 # Check for npx
 if (Test-Command "npx") {
-    Write-Success "Found npx! You can use state-docs without installation:"
+    Write-Success "Found npx! You can use praxisdoc without installation:"
     Write-Host ""
-    Write-Info "Run: npx @plures/statedoc gen --config=.stateDoc.json"
+    Write-Info "Run: npx @plures/praxisdoc gen --config=.praxisDoc.json"
     Write-Host ""
     Write-Warning "Note: This will download and run the latest version each time."
     exit 0
