@@ -13,16 +13,19 @@
 
 praxisdoc automatically generates human-readable documentation from your [Praxis](https://github.com/plures/praxis) application schemas. It transforms declarative schema definitions into clear documentation that anyone can understand—perfect for product teams, QA engineers, and stakeholders.
 
+**Now supports Praxis 1.2.x** with enhanced features including business rules, constraints, orchestration, and more.
+
 ### About Praxis
 
 **Praxis** is a schema-driven application framework for building local-first, distributed applications. It uses declarative schemas to define:
 
-- **Models**: Data structures with fields, types, and indexes
-- **Logic**: Business rules, events, facts, and state transitions
-- **Components**: UI elements auto-generated from schemas
+- **Models**: Data structures with fields, types, indexes, constraints, and relationships
+- **Logic**: Business rules, events, facts, state transitions, and runtime constraints
+- **Components**: UI elements auto-generated from schemas with props, events, and layouts
+- **Orchestration**: Distributed node configuration with PluresDB integration
 - **Documentation**: Automatically synchronized with your code
 
-praxisdoc leverages Praxis's schema format to generate comprehensive documentation including state diagrams, event flows, and data models.
+praxisdoc leverages Praxis's schema format to generate comprehensive documentation including state diagrams, event flows, data models, business rules, and orchestration diagrams.
 
 ## Installation
 
@@ -211,9 +214,13 @@ See the [Task Management Example](./examples/task-management/README.md) for a co
 
 ### What praxisdoc Does
 
-- ✅ Parses Praxis schema definitions (models, logic, components)
+- ✅ Parses Praxis schema definitions (models, logic, components, orchestration)
+- ✅ Supports Praxis 1.2.x enhanced features (rules, constraints, relationships, orchestration)
 - ✅ Generates Markdown documentation from schemas
 - ✅ Creates Mermaid state diagrams from logic transitions
+- ✅ Documents business rules and runtime constraints
+- ✅ Documents model constraints, indexes, and relationships
+- ✅ Documents component props, events, layouts, and styling
 - ✅ Supports customizable templates
 - ✅ Works with TypeScript and JavaScript
 - ✅ Converts legacy XState machines to Praxis format

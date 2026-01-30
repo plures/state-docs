@@ -1,0 +1,10 @@
+{
+  "projectTitle": "Task Management System v2 (Praxis 1.2.x)",
+  "source": ".",
+  "target": "./docs",
+  "globs": ["**/*.schema.ts"],
+  "visualization": {
+    "format": "mermaid",
+    "exportPng": false
+  }
+}

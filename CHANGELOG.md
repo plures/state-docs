@@ -7,6 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added - Praxis 1.2.x Support
+
+- **Enhanced Model Documentation**: 
+  - Support for field validation rules (required, min, max, pattern)
+  - Support for model-level constraints (unique, check, foreign keys)
+  - Support for database indexes (btree, hash, fulltext)
+  - Support for relationships (one-to-one, one-to-many, many-to-many)
+  - Support for optional fields and default values
+  
+- **Enhanced Logic Documentation**:
+  - Support for business rules with conditions (`when`) and actions (`then`)
+  - Support for runtime constraints with validation checks
+  - Support for rule priorities
+  - Support for event triggers in rules
+  - Documentation for rule execution flow
+  
+- **Enhanced Component Documentation**:
+  - Support for component props with types and defaults
+  - Support for component events with payload types
+  - Support for layout configuration (stack, grid, flex, absolute)
+  - Support for styling (CSS classes, inline styles, theme tokens)
+  - Enhanced component type documentation
+  
+- **Orchestration Support**:
+  - Support for orchestration node configuration
+  - Support for node bindings to PluresDB paths
+  - Support for synchronization configuration
+  - Support for health check configuration
+  - Documentation for distributed system architecture
+  
+- **Schema Metadata Support**:
+  - Support for additional metadata in schemas
+  - Version information in generated documentation
+  
+- **New Example**: Task Management v2 demonstrating all Praxis 1.2.x features
+
+### Changed
+
+- **Parser**: Updated to parse Praxis 1.2.x schema format
+- **Templates**: Enhanced default templates to display new Praxis 1.2.x features
+- **Type Definitions**: Updated `PraxisSchema` types to match Praxis 1.2.x
+- **README**: Updated to highlight Praxis 1.2.x compatibility
+
+### Documentation
+
+- Added comprehensive example showing all Praxis 1.2.x features
+- Updated documentation generation to include rules, constraints, and orchestration
+- Enhanced Mermaid diagram generation for complex state machines
+
 ## [2.0.0] - 2025-12-27
 
 ### 🚨 Breaking Changes
