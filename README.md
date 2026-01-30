@@ -121,14 +121,23 @@ praxisdoc gen --config=.praxisDoc.json
 
 ## Real-World Example
 
-See the [Task Management Example](./examples/task-management/README.md) for a comprehensive demonstration:
+See the examples directory for comprehensive demonstrations:
 
-- **Before**: Praxis schema definitions in TypeScript
+- **[Task Management Example](./examples/task-management/README.md)**: Basic Praxis schema with state transitions
+- **[Task Management v2 Example](./examples/task-management-v2/README.md)**: Enhanced Praxis 1.2.x features
+  - Business rules with conditions and actions
+  - Runtime constraints and validation
+  - Enhanced component definitions
+  - Orchestration configuration
+- **[Shopping Cart Example](./examples/shopping-cart/README.md)**: Legacy XState machine (auto-converted)
+
+Each example includes:
+- **Before**: Praxis/XState schema definitions in TypeScript
 - **After**: Clear Markdown documentation with Mermaid diagrams
 - **Use Cases**: Product planning, QA testing, stakeholder communication
 - **CLI Output**: See exactly what the tool generates
 
-[View the complete example →](./examples/task-management/README.md)
+[View all examples →](./examples/)
 
 ## Supported Formats
 
@@ -319,13 +328,15 @@ We welcome contributions! Whether you're fixing bugs, adding features, or improv
 
 1. 📖 Read the [CONTRIBUTING.md](./CONTRIBUTING.md) guide
 2. 🗺️ Check the [ROADMAP.md](./ROADMAP.md) for planned features
-3. 🏷️ Look for issues tagged with **`good first issue`**
-4. 💬 Join the discussion on open issues
+3. 📚 Review [Praxis 1.2.x Support](./docs/PRAXIS_V2_SUPPORT.md) for latest features
+4. 🏷️ Look for issues tagged with **`good first issue`**
+5. 💬 Join the discussion on open issues
 
 ### Quick Links
 
 - [CONTRIBUTING.md](./CONTRIBUTING.md) - Contribution guidelines and development setup
 - [ROADMAP.md](./ROADMAP.md) - Future plans and feature requests
+- [Praxis 1.2.x Support](./docs/PRAXIS_V2_SUPPORT.md) - Enhanced Praxis features documentation
 - [Issue Templates](./.github/ISSUE_TEMPLATE/) - Bug reports, feature requests, documentation
 - [ADR Process](./docs/adr/README.md) - Architectural decision records
 
