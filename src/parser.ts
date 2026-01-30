@@ -6,7 +6,7 @@ import { slugify } from "./utils.ts";
 export type PraxisModel = {
   name: string;
   desc: string;
-  fields?: Array<{ name: string; type: string; description?: string; default?: any; optional?: boolean; validation?: any[] }>;
+  fields?: Array<{ name: string; type: string | Record<string, any>; description?: string; default?: any; optional?: boolean; validation?: any[] }>;
   constraints?: Array<{ id: string; description: string; type: string; fields: string[] }>;
   indexes?: Array<{ name: string; fields: string[]; unique?: boolean; type?: string }>;
   relationships?: Array<{ name: string; type: string; target: string; foreignKey?: string; cascadeDelete?: boolean }>;

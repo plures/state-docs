@@ -26,7 +26,7 @@ export const taskSchemaV2 = {
         { name: 'priority', type: 'number', default: 0, description: 'Task priority (0-5)' },
         { name: 'createdAt', type: 'date', description: 'Creation timestamp' },
         { name: 'completedAt', type: 'date', description: 'Completion timestamp', optional: true },
-        { name: 'tags', type: { array: 'string' }, description: 'Task tags', optional: true },
+        { name: 'tags', type: 'string[]', description: 'Task tags', optional: true },
       ],
       constraints: [
         {
@@ -47,6 +47,7 @@ export const taskSchemaV2 = {
         { name: 'by_assignee', fields: ['assignee'], type: 'btree' },
         { name: 'by_created', fields: ['createdAt'], type: 'btree' },
         { name: 'by_priority', fields: ['priority', 'createdAt'], type: 'btree' },
+        { name: 'search_title_desc', fields: ['title', 'description'], type: 'fulltext' },
       ],
       relationships: [
         {
@@ -96,7 +97,7 @@ export const taskSchemaV2 = {
       description: 'Manages task lifecycle from creation to completion with business rules',
       
       events: [
-        { tag: 'TASK_CREATE', payload: { title: 'string', description: 'string', priority: 'number' }, description: 'Create a new task' },
+        { tag: 'TASK_CREATE', payload: { taskId: 'string', title: 'string', description: 'string', priority: 'number' }, description: 'Create a new task' },
         { tag: 'TASK_ASSIGN', payload: { taskId: 'string', assignee: 'string' }, description: 'Assign task to a user' },
         { tag: 'TASK_START', payload: { taskId: 'string' }, description: 'Start working on task' },
         { tag: 'TASK_PAUSE', payload: { taskId: 'string' }, description: 'Pause work on task' },
