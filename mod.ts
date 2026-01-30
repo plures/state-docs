@@ -17,3 +17,13 @@ export async function runOnce(cfg: PraxisDocConfig): Promise<void> {
   const adapters = await loadAdapters();
   return generateDocs(cfg, adapters);
 }
+
+// Re-export types from parser for external use
+export type {
+  PraxisSchema,
+  PraxisModel,
+  PraxisLogic,
+  PraxisComponent,
+  PraxisOrchestration,
+} from "./src/parser.ts";
+

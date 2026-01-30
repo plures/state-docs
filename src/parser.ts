@@ -2,11 +2,14 @@ import type { Adapters } from "../runtime.ts";
 import type { PraxisDocConfig } from "../mod.ts";
 import { slugify } from "./utils.ts";
 
-// Praxis Schema Types
+// Praxis Schema Types (aligned with Praxis 1.2.x)
 export type PraxisModel = {
   name: string;
   desc: string;
-  fields?: Array<{ name: string; type: string; description?: string; default?: any }>;
+  fields?: Array<{ name: string; type: string | Record<string, any>; description?: string; default?: any; optional?: boolean; validation?: any[] }>;
+  constraints?: Array<{ id: string; description: string; type: string; fields: string[] }>;
+  indexes?: Array<{ name: string; fields: string[]; unique?: boolean; type?: string }>;
+  relationships?: Array<{ name: string; type: string; target: string; foreignKey?: string; cascadeDelete?: boolean }>;
 };
 
 export type PraxisLogic = {
@@ -16,8 +19,28 @@ export type PraxisLogic = {
   slug: string;
   events: Array<{ tag: string; payload?: Record<string, any>; description?: string }>;
   facts?: Array<{ tag: string; payload?: Record<string, any>; description?: string }>;
+  rules?: Array<{ id: string; description: string; on?: string[]; when?: string; then: string; priority?: number }>;
+  constraints?: Array<{ id: string; description: string; check: string; message: string }>;
   transitions?: Array<{ from: string; event: string; to: string; description?: string }>;
   states?: Array<{ name: string; desc: string; slug: string; on: Array<{ event: string; target: string; description?: string }> }>;
+};
+
+export type PraxisComponent = {
+  name: string;
+  type: string;
+  model?: string;
+  description?: string;
+  props?: Array<{ name: string; type: string; required?: boolean; default?: any; description?: string }>;
+  events?: Array<{ name: string; payload?: string; description?: string }>;
+  layout?: { type: string; direction?: string; gap?: number; padding?: number; alignment?: string };
+  styling?: { classes?: string[]; styles?: Record<string, string>; theme?: Record<string, string> };
+};
+
+export type PraxisOrchestration = {
+  type: string;
+  nodes?: Array<{ id: string; type: string; config: Record<string, any>; x?: number; y?: number; props?: Record<string, any>; bindings?: Record<string, any> }>;
+  sync?: { interval: number; conflictResolution: string; targets: string[] };
+  health?: { interval: number; endpoints: string[]; timeout: number };
 };
 
 export type PraxisSchema = {
@@ -27,30 +50,35 @@ export type PraxisSchema = {
   slug: string;
   models?: PraxisModel[];
   logic: PraxisLogic[];
-  components?: Array<{ name: string; type: string; model?: string; description?: string }>;
+  components?: PraxisComponent[];
+  orchestration?: PraxisOrchestration;
+  metadata?: Record<string, any>;
 };
 
 /**
- * Parse a Praxis schema object extracted from source code
+ * Parse a Praxis schema object extracted from source code (Praxis 1.2.x format)
  */
 function parsePraxisSchema(schemaObj: any, varName: string): PraxisSchema {
   const name = schemaObj.name || varName;
   const slug = slugify(name);
   const desc = schemaObj.description || `Praxis application schema for ${name}`;
   
-  // Parse models
+  // Parse models (enhanced for Praxis 1.2.x)
   const models: PraxisModel[] = [];
   if (schemaObj.models && Array.isArray(schemaObj.models)) {
     for (const model of schemaObj.models) {
       models.push({
         name: model.name || 'Unknown',
         desc: model.description || `Model for ${model.name || 'Unknown'}`,
-        fields: model.fields || []
+        fields: model.fields || [],
+        constraints: model.constraints,
+        indexes: model.indexes,
+        relationships: model.relationships
       });
     }
   }
   
-  // Parse logic definitions (facts, events, rules, transitions)
+  // Parse logic definitions (facts, events, rules, constraints, transitions)
   const logic: PraxisLogic[] = [];
   if (schemaObj.logic && Array.isArray(schemaObj.logic)) {
     for (const logicDef of schemaObj.logic) {
@@ -70,6 +98,24 @@ function parsePraxisSchema(schemaObj: any, varName: string): PraxisSchema {
         tag: fact.tag || fact.type || 'UNKNOWN_FACT',
         payload: fact.payload,
         description: fact.description || fact.desc
+      }));
+      
+      // Extract rules (new in Praxis 1.2.x)
+      const rules = (logicDef.rules || []).map((rule: any) => ({
+        id: rule.id,
+        description: rule.description,
+        on: rule.on,
+        when: rule.when,
+        then: rule.then,
+        priority: rule.priority
+      }));
+      
+      // Extract constraints (new in Praxis 1.2.x)
+      const constraints = (logicDef.constraints || []).map((constraint: any) => ({
+        id: constraint.id,
+        description: constraint.description,
+        check: constraint.check,
+        message: constraint.message
       }));
       
       // Extract transitions (if defined)
@@ -113,8 +159,27 @@ function parsePraxisSchema(schemaObj: any, varName: string): PraxisSchema {
         slug: slugify(logicId),
         events,
         facts,
+        rules: rules.length > 0 ? rules : undefined,
+        constraints: constraints.length > 0 ? constraints : undefined,
         transitions,
         states: states.length > 0 ? states : undefined
+      });
+    }
+  }
+  
+  // Parse components (enhanced for Praxis 1.2.x)
+  const components: PraxisComponent[] = [];
+  if (schemaObj.components && Array.isArray(schemaObj.components)) {
+    for (const comp of schemaObj.components) {
+      components.push({
+        name: comp.name,
+        type: comp.type,
+        model: comp.model,
+        description: comp.description,
+        props: comp.props,
+        events: comp.events,
+        layout: comp.layout,
+        styling: comp.styling
       });
     }
   }
@@ -126,7 +191,9 @@ function parsePraxisSchema(schemaObj: any, varName: string): PraxisSchema {
     slug,
     models,
     logic,
-    components: schemaObj.components
+    components: components.length > 0 ? components : undefined,
+    orchestration: schemaObj.orchestration,
+    metadata: schemaObj.metadata
   };
 }
 

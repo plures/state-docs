@@ -26,11 +26,14 @@ This document outlines the planned features and improvements for praxisdoc. We u
 
 **Focus**: Deeper integration with Praxis framework features
 
+- [x] ✅ **Support enhanced model definitions** (constraints, indexes, relationships)
+- [x] ✅ **Support business rules in logic** (conditions, actions, priorities)
+- [x] ✅ **Support runtime constraints** (validation checks and error messages)
+- [x] ✅ **Enhanced component documentation** (props, events, layout, styling)
+- [x] ✅ **Orchestration support** (nodes, bindings, sync, health)
 - [ ] Support YAML schema definitions
 - [ ] Support JSON schema definitions
-- [ ] Parse Praxis facts and rules documentation
-- [ ] Generate component documentation from schema
-- [ ] Add support for Praxis constraints and validations
+- [ ] Parse Praxis facts and rules documentation (partial - rules done)
 - [ ] Integrate with Praxis CLI for seamless workflow
 - [ ] Add watch mode for continuous documentation generation
 
