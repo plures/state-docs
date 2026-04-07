@@ -9,6 +9,7 @@ on:
         options: [patch, minor, major]
 jobs:
   release:
+    permissions: read-all
     uses: plures/.github/.github/workflows/release-reusable.yml@main
     with:
       bump: ${{ inputs.bump || '' }}
