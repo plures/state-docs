@@ -1,3 +1,22 @@
+## [2.1.0] — 2026-04-23
+
+- feat(release): add target_version input for milestone-driven releases (cd6acdd)
+- feat(lifecycle): milestone-close triggers roadmap-aware release (1b85528)
+- feat(lifecycle v12): auto-release when milestone completes (f827124)
+- feat(lifecycle v11): smart CI failure handling — infra vs code (72c9640)
+- fix(lifecycle): label-based retry counter + CI fix priority (c8a6aeb)
+- ci: inline lifecycle workflow — fix schedule failures (2bc2807)
+- chore: apply org-standard automation files (#34) (951f534)
+- chore: centralize CI to org-wide reusable workflow (bc88c42)
+- ci: standardize Node version to lts/* — remove hardcoded versions (71e0b01)
+- ci: centralize lifecycle — event-driven with schedule guard (3cb7453)
+- fix(lifecycle): v9.1 — fix QA dispatch (client_payload as JSON object) (d0fc5a7)
+- fix(lifecycle): rewrite v9 — apply suggestions, merge, no nudges (b9abc01)
+- chore: standardize license to MIT (6f3d0ef)
+- chore: add copilot-pr-lifecycle.yml workflow (a0ad0b3)
+- ci: add PR lane event relay to centralized merge FSM (b6f4e61)
+- Add Praxis 1.2.x schema support with enhanced features (#32) (17c5b45)
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
